@@ -3,8 +3,18 @@ import './styles/AcademicHarborApp.css';
 import backgroundImage from './images/background.png';
 import homebutton from './images/home_button.png';
 import notificationIcon from './images/Notification.png';
+import { useNavigate } from 'react-router-dom';
 
 const AcademicHarborPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleSignInClick = () => {
+    navigate('/login');
+  };
+  const handleSignUp = () => {
+    navigate('/signup');
+  };
+
   return (
     <div className="container">
       <header className="headerlogo">
@@ -17,17 +27,17 @@ const AcademicHarborPage: React.FC = () => {
         <header className="header">
         <nav className="navbar">
           <ul>
-            <li><a href="#" ><img src={homebutton} alt="Home Logo" height='15'/>
+            <li><a href="/" ><img src={homebutton} alt="Home Logo" height='15'/>
         AcademicHarbor</a></li>
-            <li><a href="#">Repository</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">User Profiles</a></li>
-            <li><a href="#">Inbox</a></li>
+            <li><a href="/repository">Repository</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/user_profile">User Profiles</a></li>
+            <li><a href="/messages">Inbox</a></li>
             <li>
-          <a href="#" className="notification-icon"><img src={notificationIcon} alt="Notification Icon" height={30} /></a>
+          <a href="/notifications" className="notification-icon"><img src={notificationIcon} alt="Notification Icon" height={30} /></a>
             </li>
-              <button className="sign-in">Sign In</button>
-              <button className="sign-up">Sign Up</button>
+              <button className="sign-in" onClick={handleSignInClick}>Sign In</button>
+              <button className="sign-up" onClick={handleSignUp}>Sign Up</button>
           </ul>
         </nav>
       </header>
