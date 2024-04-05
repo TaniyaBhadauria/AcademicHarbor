@@ -73,3 +73,32 @@
     color: red; /* Set color to red */
     margin-left: 5px; /* Add some spacing between the text and the asterisk */
   }
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .divider {
+    width: 100%;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group label {
+    display: block;
+  }
+
+  .input-group input {
+    display: block;
+    width: 100%;
+  }

@@ -27,9 +27,10 @@ const LoginPage: React.FC = () => {
     <div className="container">
         <Header />
     <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
-        <div className="centered">
+        <div className="centered-content">
       <h1>Welcome Back!</h1>
       <p>Please enter your credentials to login</p>
+      <div className="input-group">
       <label>
               UserName<span className="compulsory">*</span> {/* Add asterisk for compulsory field */}
               <FaInfoCircle className="info-icon" title="Username is required for login" /> {/* Add info icon */}
@@ -40,6 +41,8 @@ const LoginPage: React.FC = () => {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      </div>
+      <div className="input-group">
      <label>
               Password<span className="compulsory">*</span> {/* Add asterisk for compulsory field */}
               <FaInfoCircle className="info-icon" title="Password is required for login" /> {/* Add info icon */}
@@ -50,6 +53,7 @@ const LoginPage: React.FC = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      </div>
       <div className="remember-me">
         <input
           type="checkbox"
