@@ -43,11 +43,11 @@ repo-container{
   }
   
   .project-table tbody tr:last-child td {
-    border-bottom: none; /* Remove separator line after the last row */
+    border-bottom: none; 
   }
   
   .project-table tbody td {
-    background-color: #ffffff; /* White background for table cells */
+    background-color: #ffffff;
   }
 
   .details-btn {
