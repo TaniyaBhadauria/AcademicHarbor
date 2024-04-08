@@ -9,6 +9,7 @@ repo-container{
   }
 
   .add-project-btn{
+    cursor: pointer;
     background-color: white;
     color: black; /* You can adjust the color to your preference */
     padding: 10px 20px; /* Adjust padding as needed */
@@ -64,3 +65,68 @@ repo-container{
   .details-btn i {
     margin-right: 5px; /* Adjust the spacing between the icon and text */
   }
+
+  .add-project-btn:hover {
+    background-color: #0056b3;
+  }
+
+
+  /* pop-up add project*/
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+  }
+  
+  .popup-content {
+    position: relative;
+  }
+  
+  .close {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    cursor: pointer;
+  }
+
+  .project-input{
+    left: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+  }
+  
+  button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
