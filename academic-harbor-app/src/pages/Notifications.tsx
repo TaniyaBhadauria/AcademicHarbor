@@ -11,7 +11,7 @@ import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 interface Notification {
   id: string;
   message: string;
-  date: string;
+  sentDate: string;
 }
 
 const Notifications: React.FC = () => {
@@ -26,42 +26,27 @@ const Notifications: React.FC = () => {
     fetchNotifications();
   }, [currentPage]);
 
-  const fetchNotifications = () => {
-    // Implement your notification fetching logic here
-    // For example, you could make an API call to retrieve the notifications
-    const mockNotifications: Notification[] = [
-      {
-        id: 'op',
-        message: 'Your profile has been selected for AI and machine learning testing project',
-        date: '3/26/2024'
-      },
-      {
-        id: 'jk',
-        message: 'Your profile did not qualify for xxxxx project',
-        date: '3/25/2024'
-      },
-      {
-        id: 'jb',
-        message: 'Your profile has been selected for image processing research paper',
-        date: '3/25/2024'
-      },
-      {
-        id: 'user',
-        message: 'Your profile has been selected for software testing research paper',
-        date: '3/25/2024'
-      }
-    ];
-
+const fetchNotifications = async () => {
+  try {
+    const response = await fetch('http://localhost:8082/hello-world/notification?name=101');
+    if (!response.ok) {
+      throw new Error('Failed to fetch notifications');
+    }
+    const data = await response.json();
     // Calculate total pages based on total notifications and page size
-    const totalPages = Math.ceil(mockNotifications.length / pageSize);
+    const totalPages = Math.ceil(data.length / pageSize);
     setTotalPages(totalPages);
 
     // Calculate the starting index of the current page
     const startIndex = (currentPage - 1) * pageSize;
     // Slice the notifications array to get notifications for the current page
-    const currentPageNotifications = mockNotifications.slice(startIndex, startIndex + pageSize);
+    const currentPageNotifications = data.slice(startIndex, startIndex + pageSize);
     setNotifications(currentPageNotifications);
-  };
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    // Handle error state if needed
+  }
+};
 
   const renderNotifications = () => {
       return (
@@ -73,7 +58,7 @@ const Notifications: React.FC = () => {
             <List.Item key={notification.id}>
               <List.Item.Meta
                 avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
-                title={<span style={{ marginRight: '10px' }}>Date: {notification.date}</span>}
+                title={<span style={{ marginRight: '10px' }}>Date: {notification.sentDate}</span>}
                 description={notification.message}
               />
             </List.Item>
