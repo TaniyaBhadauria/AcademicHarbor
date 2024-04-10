@@ -108,5 +108,31 @@ public class MongoDBExample {
             e.printStackTrace();
         }
     }
+    public static MongoCollection<Document> getCollection(String tablename) throws UnsupportedEncodingException {
+        String username = URLEncoder.encode("admin", "UTF-8");
+        String password = URLEncoder.encode("Taniya@123", "UTF-8");
+
+        String connectionString =
+                "mongodb+srv://" + username + ":" + password + "@" + "cluster0.y0nl8eb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+        try {
+
+            ServerApi serverApi = ServerApi.builder()
+                    .version(ServerApiVersion.V1)
+                    .build();
+            MongoClientSettings settings = MongoClientSettings.builder()
+                    .applyConnectionString(new ConnectionString(connectionString))
+                    .serverApi(serverApi)
+                    .build();
+            MongoClient mongoClient = MongoClients.create(settings);
+            MongoDatabase database = mongoClient.getDatabase("AcademicHarbor");
+
+            // Access the collection
+            MongoCollection<Document> collection = database.getCollection(tablename);
+            return collection;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;}
 }
 

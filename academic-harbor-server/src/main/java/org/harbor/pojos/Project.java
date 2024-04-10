@@ -1,5 +1,7 @@
 package org.harbor.pojos;
 
+import java.util.List;
+
 public class Project {
     private int projectId;
     private String projectTitle;
@@ -7,7 +9,7 @@ public class Project {
     private String startDate;
     private String endDate;
     private String projectCoordinator;
-    private int teamId;
+    private List<User> teamMembers;
     private String projectDepartment;
     private String concentration;
     private String projectStatus;
@@ -17,7 +19,7 @@ public class Project {
     }
 
     public Project(int projectId, String projectTitle, String projectDescription, String startDate, String endDate,
-                   String projectCoordinator, int teamId, String projectDepartment, String concentration,
+                   String projectCoordinator, List<User> teamMembers, String projectDepartment, String concentration,
                    String projectStatus) {
         this.projectId = projectId;
         this.projectTitle = projectTitle;
@@ -25,7 +27,7 @@ public class Project {
         this.startDate = startDate;
         this.endDate = endDate;
         this.projectCoordinator = projectCoordinator;
-        this.teamId = teamId;
+        this.teamMembers = teamMembers;
         this.projectDepartment = projectDepartment;
         this.concentration = concentration;
         this.projectStatus = projectStatus;
@@ -80,12 +82,12 @@ public class Project {
         this.projectCoordinator = projectCoordinator;
     }
 
-    public int getTeamId() {
-        return teamId;
+    public List<User> getTeamId() {
+        return teamMembers;
     }
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+    public void setTeamId(List<User> teamId) {
+        this.teamMembers = teamId;
     }
 
     public String getProjectDepartment() {
