@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
-import { FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaEnvelope, FaPhone, FaLinkedin, FaDownload, FaSearch } from 'react-icons/fa';
 import NavigationHeader from './Component/Header';
-import backgroundImage from './images/background.png'
-import { Breadcrumb, Layout, Menu, Input } from 'antd';
-import './styles/UserProfile.css'
-import type { SearchProps } from 'antd/es/input/Search';
-import { FaDownload } from 'react-icons/fa';
+import backgroundImage from './images/background.png';
+import { Breadcrumb, Layout, Menu, AutoComplete, Button, theme } from 'antd';
+import './styles/UserProfile.css';
 
-const { Search } = Input;
+const { Header, Content, Footer } = Layout;
+const { Option } = AutoComplete;
 
 interface UserProfileProps {
   userName: string;
@@ -16,129 +15,137 @@ interface UserProfileProps {
   phone: string;
   linkedin: string;
 }
-
-
-const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
-
-const testUserProfiles: UserProfileProps[] = [
-  {
-    userName: 'Sydney Coleman',
-    title: 'Assistant Professor, Division of Biomedical Sciences, University of Maryland, Baltimore County',
-    email: 'scolemanc@umbc.edu',
-    phone: '443-555-1234',
-    linkedin: 'sydney-coleman-123456',
-  },
-];
-
-const UserProfiles: React.FC<UserProfileProps> = ({
-  userName,
-  title,
-  email,
-  phone,
-  linkedin,
-}) => {
-  return (
-    <div className="user-profile">
-      <div className="profile-header">
-        <img src="profile-picture.jpg" alt="Profile" />
-        <h2>{userName}</h2>
-        <p className="title">{title}</p>
-      </div>
-      <div className="profile-details">
-        <div className="detail">
-          <FaEnvelope />
-          <span>{email}</span>
-        </div>
-        <div className="detail">
-          <FaPhone />
-          <span>{phone}</span>
-        </div>
-        <div className="detail">
-          <FaLinkedin />
-          <a href={`https://linkedin.com/${linkedin}`} target="_blank" rel="noopener noreferrer">
-            {linkedin}
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
-const { Header, Content, Footer } = Layout;
-
 const UserProfile: React.FC = () => {
-  const [userProfiles, setUserProfiles] = React.useState<UserProfileProps[]>([]);
+ const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+  const [userProfiles, setUserProfiles] = useState<UserProfileProps[]>([]);
+  const [filteredUserProfiles, setFilteredUserProfiles] = useState<UserProfileProps[]>([]);
+  const [showResults, setShowResults] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('1');
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8082/hello-world/users');
+        if (response.ok) {
+          const data = await response.json();
+          setUserProfiles(data);
+        } else {
+          console.error('Failed to fetch user profiles:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user profiles:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleMenuClick = (e: any) => {
     setActiveTab(e.key);
   };
 
-  // Fetch user profiles from the backend API (or use the test data)
-  React.useEffect(() => {
-    // Simulate fetching data from the backend API
-    setUserProfiles(testUserProfiles);
-  }, []);
+  const onSearch = (value: string) => {
+    setSearchValue(value);
+    filterUserProfiles(value);
+  };
+
+  const filterUserProfiles = (searchValue: string) => {
+    const filteredData = userProfiles.filter(profile =>
+      profile.userName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredUserProfiles(filteredData);
+    setShowResults(false);
+  };
+
+  const handleSearchButtonClick = () => {
+    const filteredData = userProfiles.filter(profile =>
+          profile.userName.toLowerCase().includes(searchValue.toLowerCase())
+        );
+        setFilteredUserProfiles(filteredData);
+        setShowResults(true);
+    console.log("Selected user:", searchValue);
+  };
+
+  const renderOption = (profile: UserProfileProps) => (
+    <Option key={profile.userName} value={profile.userName}>
+      {profile.userName}
+    </Option>
+  );
 
   return (
-    <div>
-    <NavigationHeader />
-    <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 0,marginLeft:0,marginRight:0}}>
-      <header className="app-header">
-        <Search placeholder="Search students or professors.  " onSearch={onSearch} enterButton style={{ width: 400 }} />
-      </header>
-      <Layout className="layout">
-    <Header >
-      <div className="logo" />
-      <Menu
-  theme="dark"
-  mode="horizontal"
-  defaultSelectedKeys={['2']}
-  onClick={handleMenuClick}
-  items={[
-    { key: '1', label: 'About' }, // Change the label here
-    { key: '2', label: 'Projects/Papers' }, // Change the label here
-    { key: '3', label: 'Achievements' }, // Change the label here
-  ]}
-/>
-    </Header>
-    <Content style={{ padding: '0 50px' }}>
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>About</Breadcrumb.Item>
-        <Breadcrumb.Item>Projects/Papers</Breadcrumb.Item>
-        <Breadcrumb.Item>Achievements</Breadcrumb.Item>
-      </Breadcrumb>
-      <main className="site-layout-content">
-          {activeTab === '1' && (
-            userProfiles.map((profile, index) => (
-              <UserProfiles
-                key={index}
-                userName={profile.userName}
-                title={profile.title}
-                email={profile.email}
-                phone={profile.phone}
-                linkedin={profile.linkedin}
+    <div className="container">
+      <NavigationHeader />
+      <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
+        <header className="app-header">
+          <AutoComplete
+            value={searchValue}
+            dataSource={filteredUserProfiles.map(renderOption)}
+            onSelect={value => setSearchValue(value)}
+            onSearch={onSearch}
+            placeholder="Search students or professors."
+            style={{ width: 400 }}
+          />
+          <Button type="primary" icon={<FaSearch />} onClick={handleSearchButtonClick} />
+        </header>
+
+        {showResults && (
+          <Layout className="layout" style={{ minHeight: '50vh', minWidth:'100vh', marginRight:100 }} >
+            <Header style={{ display: 'flex', alignItems: 'center' }}>
+              <div className="logo" />
+              <Menu
+               theme="dark"
+               mode="horizontal"
+               defaultSelectedKeys={['1']}
+                style={{ flex: 1, minWidth: 0 }}
+                onClick={handleMenuClick}
+                items={[
+                  { key: '1', label: 'About' },
+                  { key: '2', label: 'Projects/Papers' },
+                  { key: '3', label: 'Achievements' },
+                ]}
               />
-            ))
-          )}
-          {activeTab === '2' && (
-            <div>
-              Content for Tab 2
-            </div>
-          )}
-          {activeTab === '3' && (
-            <div>
-              Content for Tab 3
-            </div>
-          )}
-        </main>
-    </Content>
-    <Footer style={{ textAlign: 'center' }}>
-    <button className="download-btn"><FaDownload />  Download Resume</button>
-    </Footer>
-  </Layout>
-    </div>
-    </div>
+            </Header>
+            <Content style={{ padding: '0 50px' }}>
+              <main className="site-layout-content">
+                {activeTab === '1' && (
+                  filteredUserProfiles.map((profile, index) => (
+                    <div className="user-profile" key={index}>
+                      <div className="profile-header">
+                        <h2>{profile.userName}</h2>
+                        <p className="title">{profile.title}</p>
+                      </div>
+                      <div className="profile-details">
+                        <div className="detail">
+                          <FaEnvelope />
+                          <span>{profile.email}</span>
+                        </div>
+                        <div className="detail">
+                          <FaPhone />
+                          <span>{profile.phone}</span>
+                        </div>
+                        <div className="detail">
+                          <FaLinkedin />
+                          <a href={`https://linkedin.com/${profile.linkedin}`} target="_blank" rel="noopener noreferrer">
+                            {profile.linkedin}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </main>
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>
+              <button className="download-btn"><FaDownload /> Download Resume</button>
+            </Footer>
+          </Layout>
+        )}
+      </div>
+      </div>
   );
-};
+}
 
 export default UserProfile;
