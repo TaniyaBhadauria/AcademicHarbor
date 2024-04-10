@@ -71,3 +71,14 @@
   text-align: center;
   padding: 20px;
 }
+
+.login-container {
+  min-height: 80vh; /* Ensure login container takes up full viewport height */
+  display: flex;
+  align-items: center; /* Vertically center content */
+}
+.project-content{
+margin-bottom: 20px;
+    margin-right: 340px; /* Adjust left margin */
+    margin-top: 50px; /* Adjust top margin */
+}

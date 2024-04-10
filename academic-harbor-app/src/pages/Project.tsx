@@ -1,91 +1,139 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from './images/background.png'
-import Header from './Component/Header'
-import './styles/Project.css'
+import backgroundImage from './images/background.png';
+import Header from './Component/Header';
+import './styles/Project.css';
 
 interface ProjectFields {
-  title: string;
-  description: string;
-  professor: string;
-  department: string;
+  projectId: number;
+  projectTitle: string;
+  projectDescription: string;
+  projectCoordinator: string;
+  projectDepartment: string;
+  concentration: string;
 }
 
 const Project: React.FC = () => {
   const [searchText, setSearchText] = useState('');
-    const [department, setDepartment] = useState('');
-    const [professorStudent, setProfessorStudent] = useState('');
-    const [concentration, setConcentration] = useState('');
-    const [projects, setProjects] = useState<ProjectFields[]>([
-      {
-        title: 'AI testing',
-        description: 'AI testing involves the evaluation and validation of artificial intelligence systems to ensure their functionality, performance, and reliability.',
-        professor: 'Dave, Sanya, Amber',
-        department: 'IS'
+  const [departmentOptions, setDepartmentOptions] = useState<string[]>([]);
+  const [projectCoordinatorOptions, setProjectCoordinatorOptions] = useState<string[]>([]);
+  const [concentrationOptions, setConcentrationOptions] = useState<string[]>([]);
+  const [department, setDepartment] = useState('');
+  const [projectCoordinator, setProjectCoordinator] = useState('');
+  const [concentration, setConcentration] = useState('');
+  const [projects, setProjects] = useState<ProjectFields[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<ProjectFields[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProjects();
+  }, []); // Empty dependency array to run only once on component mount
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:8082/hello-world/all-projects');
+      if (response.ok) {
+        const data = await response.json();
+        setProjects(data);
+        extractDropdownOptions(data);
+      } else {
+        console.error('Failed to fetch projects:', response.statusText);
       }
-    ]);
-    const navigate = useNavigate();
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  };
 
-    const handleSearch = () => {
-      // Implement your search logic here
-      // For example, you could filter the projects based on the search criteria
-      console.log('Searching for:', searchText, department, professorStudent, concentration);
-    };
+  const extractDropdownOptions = (data: ProjectFields[]) => {
+    const departments = Array.from(new Set(data.map(project => project.projectDepartment)));
+    const professorStudentRoles = Array.from(new Set(data.map(project => project.projectCoordinator))); // Assuming fixed values for this dropdown
+    const concentrations = Array.from(new Set(data.map(project => project.concentration)));
 
-    const handleApply = (project: ProjectFields) => {
-      // Implement your apply logic here
-      // For example, you could navigate to an application page
-      console.log('Applying for:', project);
-      navigate('/apply');
-    };
+    setDepartmentOptions(['', ...departments]);
+    setProjectCoordinatorOptions(['', ...professorStudentRoles]);
+    setConcentrationOptions(['', ...concentrations]);
+  };
 
-    const handleSave = (project: ProjectFields) => {
-      // Implement your save logic here
-      // For example, you could add the project to a user's saved projects
-      console.log('Saving:', project);
-    };
+  const handleSearch = () => {
+    filterProjects();
+    setShowResults(true);
+  };
 
+  const filterProjects = () => {
+    let filtered = projects;
 
+    if (searchText.trim() !== '') {
+      const searchRegex = new RegExp(searchText, 'i');
+      filtered = filtered.filter(project => searchRegex.test(project.projectTitle));
+    } else {
+      if (department !== '') {
+        filtered = filtered.filter(project => project.projectDepartment === department);
+      }
+      if (projectCoordinator !== '') {
+        filtered = filtered.filter(project => project.projectCoordinator === projectCoordinator);
+      }
+      if (concentration !== '') {
+        filtered = filtered.filter(project => project.concentration === concentration);
+      }
+    }
+
+    setFilteredProjects(filtered);
+  };
+
+  const handleApply = (project: ProjectFields) => {
+    console.log('Applying for:', project);
+    navigate('/apply');
+  };
+
+  const handleSave = (project: ProjectFields) => {
+    console.log('Saving:', project);
+  };
 
   return (
     <div className="container">
-        <Header />
-    <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
-    <main className="content">
-            <h1>Discover a world of collaborations!</h1>
-            <div className="filters">
-              <select value={department} onChange={(e) => setDepartment(e.target.value)}>
-                <option value="">Department</option>
-                <option value="IS">IS</option>
-                {/* Add more department options */}
-              </select>
-              <select value={professorStudent} onChange={(e) => setProfessorStudent(e.target.value)}>
-                <option value="">Professor/Student</option>
-                <option value="Professor">Professor</option>
-                <option value="Student">Student</option>
-              </select>
-              <select value={concentration} onChange={(e) => setConcentration(e.target.value)}>
-                <option value="">Concentration</option>
-                <option value="AI">AI</option>
-                {/* Add more concentration options */}
-              </select>
-            </div>
-            <div className="search-bar">
-                          <input
-                            type="text"
-                            placeholder="Browse projects and research papers"
-                            value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
-                          />
-                          <button onClick={handleSearch}>Search</button>
-                        </div>
+      <Header />
+      <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <main className="project-content">
+          <h1>Discover a world of collaborations!</h1>
+          <div className="filters">
+            <select value={department} onChange={(e) => setDepartment(e.target.value)}>
+              <option value="">Department</option>
+              {departmentOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+            <select value={projectCoordinator} onChange={(e) => setProjectCoordinator(e.target.value)}>
+              <option value="">Project Coordinator</option>
+              {projectCoordinatorOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+            <select value={concentration} onChange={(e) => setConcentration(e.target.value)}>
+              <option value="">Concentration</option>
+              {concentrationOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Browse projects and research papers"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+            <button onClick={handleSearch}>Search</button>
+          </div>
+          {showResults && (
             <div className="projects">
-              {projects.map((project, index) => (
-                <div key={index} className="project-card">
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <p>Professor: {project.professor}</p>
-                  <p>Department: {project.department}</p>
+              {filteredProjects.map((project) => (
+                <div key={project.projectId} className="project-card">
+                  <h3>{project.projectTitle}</h3>
+                  <p>{project.projectDescription}</p>
+                  <p>Coordinator: {project.projectCoordinator}</p>
+                  <p>Department: {project.projectDepartment}</p>
+                  <p>Concentration: {project.concentration}</p>
                   <div className="project-actions">
                     <button onClick={() => handleSave(project)}>View Details</button>
                     <button onClick={() => handleApply(project)}>Apply</button>
@@ -94,12 +142,12 @@ const Project: React.FC = () => {
                 </div>
               ))}
             </div>
-          </main>
-
-    </div>
-    <footer className="footer">
-                <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
-              </footer>
+          )}
+        </main>
+      </div>
+      <footer className="footer">
+        <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
