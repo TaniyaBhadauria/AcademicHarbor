@@ -8,7 +8,7 @@ repo-container{
     font-weight: bold;
   }
 
-  .add-project-btn{
+  .add-project-btn, .filter-btn, .clear-btn{
     cursor: pointer;
     background-color: white;
     color: black; /* You can adjust the color to your preference */
@@ -18,6 +18,11 @@ repo-container{
     font-size: 16px; /* Adjust font size as needed */
     margin-top: 20px; /* Adjust margin top as needed */
     width: 300px;
+  }
+  .filter-btn, .clear-btn {
+    font-size: 15px;
+    width: 150px;
+    margin-left: 5px;
   }
 
   .project-table {

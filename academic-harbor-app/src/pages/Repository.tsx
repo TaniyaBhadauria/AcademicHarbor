@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from './images/background.png'
-import Header from './Component/Header'
-import './styles/Repository.css'
+import backgroundImage from './images/background.png';
+import Header from './Component/Header';
+import './styles/Repository.css';
+
+// Define a type for the project object
+interface Project {
+  projectId: string;
+  projectTitle: string;
+  projectCoordinator: string;
+  teamId: string;
+  // Add other properties as needed
+}
 
 const Repository: React.FC = () => {
+  const navigate = useNavigate();
   const [isFormVisible, setIsFormVisible] = useState(false);
-    // Function to toggle the visibility of the form
-    const toggleFormVisibility = () => {
-      setIsFormVisible(!isFormVisible);
-    };
-      // Function to close the form
-    const closeForm = () => {
-      setIsFormVisible(false);
-    };
-      // Add event listener to close the form when Escape key is pressed
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Function to toggle the visibility of the form
+  const toggleFormVisibility = () => {
+    setIsFormVisible(!isFormVisible);
+  };
+
+  // Function to close the form
+  const closeForm = () => {
+    setIsFormVisible(false);
+  };
+
+  // Add event listener to close the form when Escape key is pressed
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -28,23 +44,38 @@ const Repository: React.FC = () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, []);
-    // Dummy project data
-    const projects = [
-      { name: "Project 1", coordinator: ["Abey K Rajan", "Taniya Bhadauria",], team: "Team Members 1" },
-      { name: "Project 2", coordinator: ["Harji Kaur", "Abhiroop"], team: "Team Members 2" },
-      // Add more projects as needed
-    ];
 
-  // Function to format coordinators array with comma separation and "..." if overflow
-  const formatCoordinators = (coordinators: string[]) => {
-    const MAX_COORDINATORS = 2; // Maximum number of coordinators to display before using "..."
-    if (coordinators.length <= MAX_COORDINATORS) {
-      return coordinators.join(", ");
-    } else {
-      const visibleCoordinators = coordinators.slice(0, MAX_COORDINATORS).join(", ");
-      return `${visibleCoordinators}, ...`;
-    }
+  // Fetch project data from the API
+  useEffect(() => {
+    fetch('http://localhost:8082/hello-world/all-projects')
+      .then(response => response.json())
+      .then((data: Project[]) => {
+        setProjects(data);
+      })
+      .catch(error => {
+        console.error('Error fetching project data:', error);
+      });
+  }, []);
+
+  // Function to handle toggling filter dropdown visibility
+  const toggleFilterDropdown = () => {
+    setShowFilterDropdown(!showFilterDropdown);
   };
+
+  // Function to handle search input change
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Function to clear the search term
+  const clearFilter = () => {
+    setSearchTerm('');
+  };
+
+  // Filter projects based on search term
+  const filteredProjects = projects.filter(project =>
+    project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="container">
@@ -52,52 +83,68 @@ const Repository: React.FC = () => {
       <Header />
       <div className="repo-container" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100, marginLeft: 0, marginRight: 0 }}>
         <p className="text-1">Unlock the Gateway to Knowledge: explore, Expand, and Excel with Our Project Repository!</p>
-        <button className="add-project-btn" onClick={toggleFormVisibility}><i className="fas fa-plus"></i> Add Add a new project</button>
-        <br/>
+        <button className="add-project-btn" onClick={toggleFormVisibility}><i className="fas fa-plus"></i> Add a new project</button>
+        <br />
         {isFormVisible && (
-        <div className="popup">
-          <div className="popup-content">
-            <span className="close" onClick={toggleFormVisibility}>&times;</span><br/><br/>
-            <form>
-              <div className="form-group">
-                <label htmlFor="project-name">Project Name:</label>
-                <input className="project-input" id="project-name" type="text" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="project-contributors">Project Contributors:</label>
-                <input id="project-contributors" type="text" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="team-name">Team Name:</label>
-                <input id="team-name" type="text" />
-              </div>
-              <button type="submit">Submit</button>
-            </form>
+          <div className="popup">
+            <div className="popup-content">
+              <span className="close" onClick={toggleFormVisibility}>&times;</span><br /><br />
+              <form>
+                <div className="form-group">
+                  <label htmlFor="project-name">Project Name:</label>
+                  <input className="project-input" id="project-name" type="text" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="project-contributors">Project Contributors:</label>
+                  <input id="project-contributors" type="text" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="team-name">Team Name:</label>
+                  <input id="team-name" type="text" />
+                </div>
+                <button type="submit">Submit</button>
+              </form>
+            </div>
           </div>
+        )}
+        <div className="filter-dropdown">
+          <button className="filter-btn" onClick={toggleFilterDropdown}>
+            <i className="fas fa-filter"></i> Filter projects
+          </button>
+          <button className="clear-btn" onClick={clearFilter}>Clear Filter</button>
+          {showFilterDropdown && (
+            <div className="dropdown-content">
+              <input
+                type="text"
+                placeholder="Filter projects..."
+                value={searchTerm}
+                onChange={handleSearchInputChange}
+              />
+              
+            </div>
+          )}
         </div>
-      )}
-        <button className="add-project-btn"><i className="fas fa-filter"></i> Filter project repository</button>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <table className="project-table">
-        <thead>
-          <tr>
-            <th>Projects/Papers</th>
-            <th>Project Coordinators</th>
-            <th>Team</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map((project, index) => (
-            <tr key={index}>
-              <td>{project.name}</td>
-              <td>{formatCoordinators(project.coordinator)}</td>
-              <td>{project.team}</td>
-              <button className="details-btn"><i className="fas fa-info"></i> View more details</button>
+          <thead>
+            <tr>
+              <th>Projects/Papers</th>
+              <th>Project Coordinators</th>
+              <th>Team</th>
             </tr>
-          ))}
-        </tbody>
-      </table> 
+          </thead>
+          <tbody>
+            {filteredProjects.map((project: Project, index: number) => (
+              <tr key={index}>
+                <td>{project.projectTitle}</td>
+                <td>{project.projectCoordinator}</td>
+                <td>{project.teamId}</td> {/* Replace with team data */}
+                <button className="details-btn" onClick={() => navigate(`/project-details/${project.projectId}`)}><i className="fas fa-info"></i> View more details</button>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -3,14 +3,32 @@ import './styles/AcademicHarborApp.css';
 import homebutton from './images/home_button.png';
 import notificationIcon from './images/Notification.png';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineUser } from "react-icons/ai";
+import { useState } from 'react';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isLoggedIn?: boolean;
+}  
+const Header: React.FC<HeaderProps> = () => {
+
+  const isLoggedInString = sessionStorage.getItem('isUserLoggedIn');
+  const isLoggedIn = isLoggedInString ? JSON.parse(isLoggedInString) : false;
   const navigate = useNavigate();
   const handleSignInClick = () => {
     navigate('/login');
   };
   const handleSignUp = () => {
     navigate('/signup');
+  };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('isUserLoggedIn');
+    navigate('/');
   };
 
   return (
@@ -34,8 +52,26 @@ const Header: React.FC = () => {
             <li>
           <a href="notifications" className="notification-icon"><img src={notificationIcon} alt="Notification Icon" height={30} /></a>
             </li>
-              <button className="sign-in" >Sign In</button>
-              <button className="sign-up" >Sign Up</button>
+            {isLoggedIn  ? (
+                          <li>
+                          <div className="dropdown">
+                            <button className="user-profile-icon" onClick={toggleDropdown}>
+                              <AiOutlineUser size={30} />
+                            </button>
+                            {isDropdownOpen && (
+                              <div className="dropdown-content">
+                                <li><button>Profile</button></li>
+                                <li><button onClick={handleLogout}>Logout</button></li>
+                              </div>
+                           )}
+                          </div>
+                        </li>
+            ) : (
+              <React.Fragment>
+                <li><button className="sign-in" onClick={handleSignInClick}>Sign In</button></li>
+                <li><button className="sign-up" onClick={handleSignUp}>Sign Up</button></li>
+              </React.Fragment>
+            )}
           </ul>
         </nav>
       </header>
