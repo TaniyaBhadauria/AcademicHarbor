@@ -19,6 +19,11 @@ repo-container{
     margin-top: 20px; /* Adjust margin top as needed */
     width: 300px;
   }
+  .filter-btn, .clear-btn {
+    font-size: 15px;
+    width: 150px;
+    margin-left: 5px;
+  }
 
   .project-table {
     width: 100%;

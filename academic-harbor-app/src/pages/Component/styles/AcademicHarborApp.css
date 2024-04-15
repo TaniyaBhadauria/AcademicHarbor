@@ -67,7 +67,7 @@ body {
   /* display: block; */
 }
 
-.sign-in, .sign-up {
+.sign-in, .sign-up{
   background-color: #ffcc00; /* Set background color to yellow */
   color: black; /* Set text color */
   border: none;
@@ -75,6 +75,10 @@ body {
   margin-right: 50px; /* Add margin between buttons */
   border-radius: 20px;
   margin-left: 25px;
+}
+
+.user-profile-icon {
+  margin-left: auto; /* Push the profile icon to the extreme right */
 }
 
 /* Content Styles */
@@ -119,3 +123,8 @@ body {
   height: 100%;
 }
 
+.dropdown-content{
+  width: 20px; /* Ensure container takes full width of the viewport */
+  height: .5px;
+}
+  

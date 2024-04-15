@@ -16,7 +16,8 @@ const LoginPage: React.FC = () => {
     // For example, you could make an API call to authenticate the user
     if (username === 'your_username' && password === 'your_password') {
       // If the login is successful, navigate to the home page
-      navigate('/home');
+      sessionStorage.setItem('isUserLoggedIn', JSON.stringify(true));
+      navigate('/');
     } else {
       // Display an error message or handle the login failure
       alert('Invalid username or password');
