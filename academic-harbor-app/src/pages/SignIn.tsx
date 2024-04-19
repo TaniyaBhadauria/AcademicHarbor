@@ -12,16 +12,31 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Implement your login logic here
-    // For example, you could make an API call to authenticate the user
-    if (username === 'your_username' && password === 'your_password') {
-      // If the login is successful, navigate to the home page
-      sessionStorage.setItem('isUserLoggedIn', JSON.stringify(true));
-      navigate('/');
-    } else {
-      // Display an error message or handle the login failure
-      alert('Invalid username or password');
-    }
+    fetch(`http://localhost:8082/hello-world/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`)
+      .then(response => {
+        if (response.ok) {
+          // If the response is successful, parse the JSON
+          return response.json();
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(data => {
+        // Check if the response data is valid
+        if (data) {
+          // If the login is successful, navigate to the home page or perform any other action
+          sessionStorage.setItem('userData', JSON.stringify(data));
+          sessionStorage.setItem('isUserLoggedIn', JSON.stringify(true));
+          navigate('/');
+        } else {
+          // Display an error message or handle the login failure
+          alert('Invalid username or password');
+        }
+      })
+      .catch(error => {
+        // Handle any errors that occurred during the fetch
+        console.error('Error fetching data:', error);
+        alert('An error occurred during login. Please try again later.');
+      });
   };
 
   return (
