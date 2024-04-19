@@ -3,38 +3,38 @@
     flex-direction: column;
     align-items: center;
   }
-  
+
   .login-container {
     background-size: cover;
     padding: 20px;
   }
-  
+
   h1 {
     margin-bottom: 20px;
   }
-  
+
   .form-fields {
     display: inline-block;
     text-align: left;
   }
-  
+
   .input-group {
     margin-bottom: 15px;
   }
-  
+
   label {
     display: block;
     margin-bottom: 5px;
   }
-  
+
   .input-group input {
     width: 250px;
   }
-  
+
   .password-field {
     position: relative;
   }
-  
+
   .password-toggle {
     position: absolute;
     right: 5px;
@@ -42,16 +42,16 @@
     transform: translateY(-50%);
     cursor: pointer;
   }
-  
+
   .remember-me {
     margin-bottom: 10px;
   }
-  
+
   .forgot-password,
   .sign-up {
     margin-top: 10px;
   }
-  
+
   button {
     margin-top: 10px;
   }

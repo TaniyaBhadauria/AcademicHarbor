@@ -58,7 +58,7 @@ body {
   margin-top: 1000;
 }
 .notification-icon {
-  margin-left: 800px; /* Push the notification icon to the extreme right */
+  margin-left: 600px; /* Push the notification icon to the extreme right */
 }
 .notification-icon img {
   width: 30px;
@@ -126,7 +126,6 @@ body {
   border: 1px solid #000; /* Add a 1px black solid border */
   border-radius: 5px; /* Add a border radius for rounded corners */
   position: absolute; /* Position the dropdown content */
-  right: 0; /* Align to the right */
   z-index: 1; /* Ensure dropdown content appears above other elements */
 }
 .dropdown-content li {
