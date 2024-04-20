@@ -1,60 +1,50 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .login-container {
-    background-size: cover;
-    padding: 20px;
-  }
-  
-  h1 {
-    margin-bottom: 20px;
-  }
-  
-  .form-fields {
-    display: inline-block;
-    text-align: left;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .input-group input {
-    width: 250px;
-  }
-  
-  .password-field {
-    position: relative;
-  }
-  
-  .password-toggle {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
-  
-  .remember-me {
-    margin-bottom: 10px;
-  }
-  
-  .forgot-password,
-  .sign-up {
-    margin-top: 10px;
-  }
-  
-  button {
-    margin-top: 10px;
-  }
-  
-  /* Adjust styling as needed */
-  
+/* SignUp.css */
+
+.signup-form {
+  background-color: #ffffff; /* White background */
+  padding: 50px; /* Add padding */
+  border-radius: 10px; /* Add border radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+.signup-form h3 {
+  text-align: center;
+  margin-bottom: 10px; /* Add some space below the heading */
+}
+
+.signup-form label {
+  font-weight: bold; /* Make labels bold */
+  text-align: left;
+} 
+
+.signup-form .form-control {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 0px;
+  border: 1px solid #ced4da; /* Add border */
+  border-radius: 5px; /* Add border radius */
+}
+
+.signup-form .btn-primary {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff; /* Button color */
+  color: #fff; /* Text color */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+.signup-form .btn-primary:hover {
+  background-color: #0056b3; /* Darker button color on hover */
+}
+
+.signup-form .forgot-password {
+  margin-top: 20px;
+}
+
+.signup-form .forgot-password a {
+  color: #007bff; /* Link color */
+}
