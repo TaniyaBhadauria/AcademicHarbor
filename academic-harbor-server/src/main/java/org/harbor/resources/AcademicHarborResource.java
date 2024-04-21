@@ -4,10 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.bson.Document;
 import org.harbor.MongoDBExample;
@@ -140,7 +137,38 @@ public class AcademicHarborResource {
             return null;
         }
     }
+    @GET
+    @Path("/register")
+    public String registerUser(@QueryParam("username") String username,
+                                 @QueryParam("password") String password,
+                                 @QueryParam("email") String email,
+                                 @QueryParam("profilePicture") String profilePicture,
+                                 @QueryParam("linkedin") String linkedin,
+                                 @QueryParam("phone") String phone,
+                                 @QueryParam("resumeId") String resumeId,
+                                 @QueryParam("role") String role,
+                                 @QueryParam("registrationDate") String registrationDate) throws UnsupportedEncodingException {
 
+        // Connect to the MongoDB database
+        MongoCollection<Document> userCollection = new MongoDBExample().getCollection("User");
+
+        // Create a new user document
+        Document userDocument = new Document("userName", username)
+                .append("password", password)
+                .append("emailId", email)
+                .append("profilePicture", profilePicture)
+                .append("linkedin", linkedin)
+                .append("phone", phone)
+                .append("resumeId", resumeId)
+                .append("role", role)
+                .append("registrationDate", registrationDate);
+
+        // Insert the user document into the database
+        userCollection.insertOne(userDocument);
+
+        // Return success response
+        return "User registered successfully";
+    }
     // Helper method to convert a MongoDB Document to a User object
     private User documentToUser(Document document) {
         User user = new User();
@@ -156,4 +184,5 @@ public class AcademicHarborResource {
         user.setRegistrationDate(document.getString("registrationDate"));
         return user;
     }
+
 }
