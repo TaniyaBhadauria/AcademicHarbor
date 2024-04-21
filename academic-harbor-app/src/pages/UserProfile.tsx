@@ -29,6 +29,7 @@ const UserProfile: React.FC = () => {
   const [emailForm] = Form.useForm();
   const [selectedProfileEmail, setSelectedProfileEmail] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
+  const [myEmail, setMyEmail] = useState<string>('');
   const [showChatModal, setShowChatModal] = useState(false); // Add state for chat modal visibility
   const userDataString = sessionStorage.getItem('userData');
   const userData = userDataString ? JSON.parse(userDataString) : null;
@@ -83,9 +84,10 @@ const UserProfile: React.FC = () => {
     </Option>
   );
 
-  const handleEmailButtonClick = (email: string) => {
-    setSelectedProfileEmail(email);
-    setUserEmail(userData.emailId);
+  const handleEmailButtonClick = (profile: UserProfileProps) => {
+    setSelectedProfileEmail(profile.emailId);
+    setMyEmail(userData.emailId);
+    setUserEmail(profile.emailId);
     setEmailModalVisible(true);
   };
 
@@ -168,7 +170,7 @@ const UserProfile: React.FC = () => {
                             <Button type="primary" icon={<FaPhoneSquare />} className="action-button">Call</Button>
                             {/* Modify the onClick handler to open the chat modal */}
                             <Button type="primary" icon={<FaCommentAlt />} className="action-button" onClick={handleChatButtonClick}>Message</Button>
-                            <Button type="primary" icon={<FaEnvelopeSquare />} className="action-button" onClick={() => handleEmailButtonClick(profile.emailId)}>Email</Button>
+                            <Button type="primary" icon={<FaEnvelopeSquare />} className="action-button" onClick={() => handleEmailButtonClick(profile)}>Email</Button>
                           </div>
                         </div>
                         <div className="form-container">
@@ -232,7 +234,7 @@ const UserProfile: React.FC = () => {
             <Form.Item
               name="from"
               label="From"
-              initialValue={userEmail}
+              initialValue={myEmail}
               rules={[{ required: true, message: 'Please input your email address!' }]}
             >
               <Input disabled />
