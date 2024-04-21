@@ -16,6 +16,19 @@
   width: 100%;
   max-width: 1200px;
 }
+/* UserProfile.css */
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.action-button {
+  flex: 1;
+  margin-right: 10px; /* Adjust the spacing between buttons as needed */
+}
+
 
 .site-layout-content {
   min-height: 500px;

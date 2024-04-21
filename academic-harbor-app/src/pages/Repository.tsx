@@ -5,11 +5,20 @@ import Header from './Component/Header';
 import './styles/Repository.css';
 
 // Define a type for the project object
+interface UserProfileProps {
+  userName: string;
+  title: string;
+  emailId: string;
+  phone: string;
+  role: string;
+  profilePicture: string;
+  linkedin: string;
+}
 interface Project {
   projectId: string;
   projectTitle: string;
   projectCoordinator: string;
-  teamId: string;
+  teamId: [UserProfileProps];
   // Add other properties as needed
 }
 
@@ -139,7 +148,14 @@ const Repository: React.FC = () => {
               <tr key={index}>
                 <td>{project.projectTitle}</td>
                 <td>{project.projectCoordinator}</td>
-                <td>{project.teamId}</td> {/* Replace with team data */}
+                <td>
+                  {project.teamId.map((user, index) => (
+                    <div key={index}>
+                      <div>{user.userName}</div>
+                      {/* Add other user properties as needed */}
+                    </div>
+                  ))}
+                </td>
                 <button className="details-btn" onClick={() => navigate(`/project-details/${project.projectId}`)}><i className="fas fa-info"></i> View more details</button>
               </tr>
             ))}

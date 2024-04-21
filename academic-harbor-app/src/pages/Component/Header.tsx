@@ -28,8 +28,12 @@ const Header: React.FC<HeaderProps> = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('isUserLoggedIn');
+    sessionStorage.removeItem('userData');
     navigate('/');
   };
+  const navigateProfile = () => {
+      navigate('/profile');
+    };
 
   return (
     <div className="container">
@@ -54,18 +58,19 @@ const Header: React.FC<HeaderProps> = () => {
             </li>
             {isLoggedIn  ? (
                           <li>
-                          <div className="dropdown">
-                            <button className="user-profile-icon" onClick={toggleDropdown}>
-                              <AiOutlineUser size={30} />
-                            </button>
-                            {isDropdownOpen && (
-                              <div className="dropdown-content">
-                                <li><button>Profile</button></li>
-                                <li><button onClick={handleLogout}>Logout</button></li>
-                              </div>
-                           )}
-                          </div>
-                        </li>
+                            <div className="user-profile-icon">
+                              <button onClick={toggleDropdown}>
+                                <AiOutlineUser size={20} />
+                              </button>
+                              {isDropdownOpen && (
+                                <div className="dropdown-content">
+                                  <li><button  onClick={navigateProfile}>Profile</button></li>
+                                  <li><button onClick={handleLogout}>Logout</button></li>
+                                </div>
+                              )}
+                            </div>
+                          </li>
+
             ) : (
               <React.Fragment>
                 <li><button className="sign-in" onClick={handleSignInClick}>Sign In</button></li>

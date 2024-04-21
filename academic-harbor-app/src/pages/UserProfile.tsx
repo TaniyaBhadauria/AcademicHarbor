@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FaEnvelope, FaPhone, FaLinkedin, FaDownload, FaSearch } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaLinkedin, FaDownload, FaSearch, FaPhoneSquare, FaEnvelopeSquare, FaCommentAlt } from 'react-icons/fa';
 import NavigationHeader from './Component/Header';
 import backgroundImage from './images/background.png';
-import { Breadcrumb, Layout, Menu, AutoComplete, Button, theme } from 'antd';
+import { Breadcrumb, Layout, Menu, AutoComplete, Button, theme, Form, Input } from 'antd';
 import './styles/UserProfile.css';
 
 const { Header, Content, Footer } = Layout;
@@ -11,14 +11,14 @@ const { Option } = AutoComplete;
 interface UserProfileProps {
   userName: string;
   title: string;
-  email: string;
+  emailId: string;
   phone: string;
+  role: string;
+  profilePicture: string;
   linkedin: string;
 }
+
 const UserProfile: React.FC = () => {
- const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
   const [userProfiles, setUserProfiles] = useState<UserProfileProps[]>([]);
   const [filteredUserProfiles, setFilteredUserProfiles] = useState<UserProfileProps[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -62,10 +62,10 @@ const UserProfile: React.FC = () => {
 
   const handleSearchButtonClick = () => {
     const filteredData = userProfiles.filter(profile =>
-          profile.userName.toLowerCase().includes(searchValue.toLowerCase())
-        );
-        setFilteredUserProfiles(filteredData);
-        setShowResults(true);
+      profile.userName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredUserProfiles(filteredData);
+    setShowResults(true);
     console.log("Selected user:", searchValue);
   };
 
@@ -78,7 +78,7 @@ const UserProfile: React.FC = () => {
   return (
     <div className="container">
       <NavigationHeader />
-      <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
+      <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100, marginLeft: 0, marginRight: 0 }}>
         <header className="app-header">
           <AutoComplete
             value={searchValue}
@@ -92,13 +92,13 @@ const UserProfile: React.FC = () => {
         </header>
 
         {showResults && (
-          <Layout className="layout" style={{ minHeight: '50vh', minWidth:'100vh', marginRight:100 }} >
+          <Layout className="layout" style={{ minHeight: '50vh', minWidth: '100vh', marginRight: 100 }} >
             <Header style={{ display: 'flex', alignItems: 'center' }}>
               <div className="logo" />
               <Menu
-               theme="dark"
-               mode="horizontal"
-               defaultSelectedKeys={['1']}
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={['1']}
                 style={{ flex: 1, minWidth: 0 }}
                 onClick={handleMenuClick}
                 items={[
@@ -113,24 +113,44 @@ const UserProfile: React.FC = () => {
                 {activeTab === '1' && (
                   filteredUserProfiles.map((profile, index) => (
                     <div className="user-profile" key={index}>
-                      <div className="profile-header">
-                        <h2>{profile.userName}</h2>
-                        <p className="title">{profile.title}</p>
-                      </div>
-                      <div className="profile-details">
-                        <div className="detail">
-                          <FaEnvelope />
-                          <span>{profile.email}</span>
+                      <div className="profile-layout">
+                        <div className="profile-header">
+                          <div className="profile-picture">
+                            <img src={profile.profilePicture} alt="Profile" className="profile-img" />
+                          </div>
+                          <h2>{profile.userName}</h2>
+                          <p className="title">{profile.title}</p>
+                          <div className="detail">
+                            <span>{profile.role}</span>
+                          </div>
+                          <div className="detail">
+                            <FaPhone />
+                            <span>{profile.phone}</span>
+                          </div>
+                          <div className="actions">
+                            <Button type="primary" icon={<FaPhoneSquare />} className="action-button">Call</Button>
+                            <Button type="primary" icon={<FaCommentAlt />} className="action-button">Message</Button>
+                            <Button type="primary" icon={<FaEnvelopeSquare />} className="action-button">Email</Button>
+                          </div>
                         </div>
-                        <div className="detail">
-                          <FaPhone />
-                          <span>{profile.phone}</span>
-                        </div>
-                        <div className="detail">
-                          <FaLinkedin />
-                          <a href={`https://linkedin.com/${profile.linkedin}`} target="_blank" rel="noopener noreferrer">
-                            {profile.linkedin}
-                          </a>
+                        <div className="form-container">
+                          <Form layout="vertical">
+                            <Form.Item label="User Name">
+                              <Input value={profile.userName} disabled />
+                            </Form.Item>
+                            <Form.Item label="Contact Number">
+                              <Input value={profile.phone} disabled />
+                            </Form.Item>
+                            <Form.Item label="User Title">
+                              <Input value={profile.role} disabled />
+                            </Form.Item>
+                            <Form.Item label="Linkedin">
+                              <Input value={profile.linkedin} disabled />
+                            </Form.Item>
+                            <Form.Item label="University Email Address">
+                              <Input value={profile.emailId} disabled />
+                            </Form.Item>
+                          </Form>
                         </div>
                       </div>
                     </div>
@@ -144,7 +164,7 @@ const UserProfile: React.FC = () => {
           </Layout>
         )}
       </div>
-      </div>
+    </div>
   );
 }
 

@@ -57,6 +57,26 @@ public class AcademicHarborResource {
         }
         return list;
     }
+    @GET
+    @Path("/users")
+    @Timed
+    public List<User> getUsers() throws UnsupportedEncodingException {
+        FindIterable<Document> documents = new MongoDBExample().getNotifications("User");
+        // Iterate over the documents and print details
+        List<User> list = new ArrayList<>();
+        MongoCursor<Document> cursor = documents.iterator();
+        while (cursor.hasNext()) {
+            Document userDdoc = cursor.next();
+                User u = new User(userDdoc.getInteger("userId"), userDdoc.getString("userName"),
+                        userDdoc.getString("profilePicture"), userDdoc.getString("emailId"),
+                        userDdoc.getString("password"), userDdoc.getString("linkedin")
+                        , userDdoc.getString("phone"), userDdoc.getString("resumeId")
+                        , userDdoc.getString("role")
+                        , userDdoc.getString("registrationDate"));
+                list.add(u);
+            }
+        return list;
+    }
 
     @GET
     @Path("/all-projects")
@@ -99,5 +119,41 @@ public class AcademicHarborResource {
         }
 
         return list;
+    }
+    @GET
+    @Path("/login")
+    @Timed
+    public User loginUser(@QueryParam("username") String username, @QueryParam("password") String password) throws UnsupportedEncodingException {
+        // Connect to the MongoDB database
+        MongoCollection<Document> userCollection = new MongoDBExample().getCollection("User");
+
+        // Query the database to find the user with the provided username and password
+        Document query = new Document("userName", username)
+                .append("password", password);
+        Document userDocument = userCollection.find(query).first();
+
+        if (userDocument != null) {
+            // User found, return user details
+            return documentToUser(userDocument);
+        } else {
+            // User not found, return null or handle appropriately
+            return null;
+        }
+    }
+
+    // Helper method to convert a MongoDB Document to a User object
+    private User documentToUser(Document document) {
+        User user = new User();
+        user.setUserId(document.getInteger("userId"));
+        user.setUserName(document.getString("userName"));
+        user.setProfilePicture(document.getString("profilePicture"));
+        user.setEmailId(document.getString("emailId"));
+        user.setPassword(document.getString("password"));
+        user.setLinkedin(document.getString("linkedin"));
+        user.setPhone(document.getString("phone"));
+        user.setResumeId(document.getString("resumeId"));
+        user.setRole(document.getString("role"));
+        user.setRegistrationDate(document.getString("registrationDate"));
+        return user;
     }
 }
