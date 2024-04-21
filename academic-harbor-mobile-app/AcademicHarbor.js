@@ -10,6 +10,9 @@ const AcademicHarborPage = () => {
   const handleSignIn = () => {
      navigation.navigate('SignIn');
   };
+  const handleRepository = () => {
+    navigation.navigate('Repository');
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -47,6 +50,9 @@ const AcademicHarborPage = () => {
       marginBottom: 10,
     },
     signIn: {
+      fontWeight: 'bold',
+    },
+    repository: {
       fontWeight: 'bold',
     },
     signUp: {
@@ -104,7 +110,7 @@ const AcademicHarborPage = () => {
       </View>
       {showMenu && (
         <View style={styles.menu}>
-          <Text style={styles.menuItem}>Repository</Text>
+          <Text style={[styles.menuItem, styles.repository]} onPress={handleRepository}>Repository</Text>
           <Text style={styles.menuItem}>Projects</Text>
           <Text style={styles.menuItem}>User Profiles</Text>
           <Text style={styles.menuItem}>Inbox</Text>
