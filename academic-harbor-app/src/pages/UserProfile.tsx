@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FaEnvelope, FaPhone, FaLinkedin, FaDownload, FaSearch, FaPhoneSquare, FaEnvelopeSquare, FaCommentAlt } from 'react-icons/fa';
+import { Modal, Breadcrumb, Layout, Menu, AutoComplete, Button, Form, Input } from 'antd';
 import NavigationHeader from './Component/Header';
 import backgroundImage from './images/background.png';
-import { Breadcrumb, Layout, Menu, AutoComplete, Button, theme, Form, Input } from 'antd';
 import './styles/UserProfile.css';
+import Chat from './Chat';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = AutoComplete;
@@ -24,6 +25,13 @@ const UserProfile: React.FC = () => {
   const [showResults, setShowResults] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('1');
   const [searchValue, setSearchValue] = useState<string>('');
+  const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
+  const [emailForm] = Form.useForm();
+  const [selectedProfileEmail, setSelectedProfileEmail] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [showChatModal, setShowChatModal] = useState(false); // Add state for chat modal visibility
+  const userDataString = sessionStorage.getItem('userData');
+  const userData = userDataString ? JSON.parse(userDataString) : null;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +82,35 @@ const UserProfile: React.FC = () => {
       {profile.userName}
     </Option>
   );
+
+  const handleEmailButtonClick = (email: string) => {
+    setSelectedProfileEmail(email);
+    setUserEmail(userData.emailId);
+    setEmailModalVisible(true);
+  };
+
+  const handleEmailModalOk = () => {
+    setEmailModalVisible(false);
+  };
+
+  const handleEmailModalCancel = () => {
+    setEmailModalVisible(false);
+  };
+
+  const sendEmail = () => {
+    const values = emailForm.getFieldsValue();
+    console.log('Email Values:', values);
+    // Send email logic here
+    setEmailModalVisible(false);
+  };
+
+  const handleChatButtonClick = () => {
+    setShowChatModal(true); // Show chat modal
+  };
+
+  const handleChatModalClose = () => {
+    setShowChatModal(false); // Hide chat modal
+  };
 
   return (
     <div className="container">
@@ -129,8 +166,9 @@ const UserProfile: React.FC = () => {
                           </div>
                           <div className="actions">
                             <Button type="primary" icon={<FaPhoneSquare />} className="action-button">Call</Button>
-                            <Button type="primary" icon={<FaCommentAlt />} className="action-button">Message</Button>
-                            <Button type="primary" icon={<FaEnvelopeSquare />} className="action-button">Email</Button>
+                            {/* Modify the onClick handler to open the chat modal */}
+                            <Button type="primary" icon={<FaCommentAlt />} className="action-button" onClick={handleChatButtonClick}>Message</Button>
+                            <Button type="primary" icon={<FaEnvelopeSquare />} className="action-button" onClick={() => handleEmailButtonClick(profile.emailId)}>Email</Button>
                           </div>
                         </div>
                         <div className="form-container">
@@ -163,6 +201,61 @@ const UserProfile: React.FC = () => {
             </Footer>
           </Layout>
         )}
+
+        <Modal
+          title="Send Email"
+          visible={emailModalVisible}
+          onOk={handleEmailModalOk}
+          onCancel={handleEmailModalCancel}
+          footer={[
+            <Button key="back" onClick={handleEmailModalCancel}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={sendEmail}>
+              Send
+            </Button>,
+          ]}
+        >
+          <Form
+            form={emailForm}
+            layout="vertical"
+            name="email_form"
+          >
+            <Form.Item
+              name="to"
+              label="To"
+              initialValue={selectedProfileEmail}
+              rules={[{ required: true, message: 'Please input the recipient email!' }]}
+            >
+              <Input disabled />
+            </Form.Item>
+            <Form.Item
+              name="from"
+              label="From"
+              initialValue={userEmail}
+              rules={[{ required: true, message: 'Please input your email address!' }]}
+            >
+              <Input disabled />
+            </Form.Item>
+            <Form.Item
+              name="messageBody"
+              label="Message Body"
+              rules={[{ required: true, message: 'Please input the message body!' }]}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        {/* Render the chat component within a modal */}
+        <Modal
+          title="Chat"
+          visible={showChatModal}
+          onCancel={handleChatModalClose}
+          footer={null}
+        >
+          <Chat />
+        </Modal>
       </div>
     </div>
   );
