@@ -7,7 +7,8 @@ import './styles/SignUp.css'; // Import your custom CSS for sign-up page styling
 const SignUp: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState('');
+  const [confirm_password, setConfirm_password] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -55,6 +56,9 @@ const SignUp: React.FC = () => {
           </p>
         </form>
       </div>
+      <footer className="footer">
+              <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
+            </footer>
     </div>
   );
 };
