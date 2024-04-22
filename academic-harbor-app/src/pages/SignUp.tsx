@@ -101,7 +101,7 @@ const SignUp: React.FC = () => {
           <p className="forgot-password text-right">
             Already registered? <a href="/sign-in">Sign in</a>
           </p>
-        </form>
+        </Form>
       </div>
       <footer className="footer">
         <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>

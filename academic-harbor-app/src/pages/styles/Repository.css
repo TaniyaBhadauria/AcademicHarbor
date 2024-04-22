@@ -88,10 +88,15 @@ repo-container{
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 9999;
+  width: 50%;
+  height: 60%;
 }
 
 .popup-content {
   position: relative;
+  max-height: 0px; /* Set the maximum height of the popup content */
+  overflow-y: auto; /* Add vertical scroll bar if content exceeds the maximum height */
+  padding: 20px; /* Add padding to the content */
 }
 
 .close {
@@ -134,3 +139,5 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #0056b3;
 }
+
+
