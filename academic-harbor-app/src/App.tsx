@@ -9,6 +9,7 @@ import Notifications from './pages/Notifications';
 import UserProfile from './pages/UserProfile';
 import Project from './pages/Project';
 import Profile from './pages/Profile';
+import Help from './pages/Help';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Route path="/messages" element={<Messages />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/help" element={<Help/>}/>
         </Routes>
     </Router>
   );

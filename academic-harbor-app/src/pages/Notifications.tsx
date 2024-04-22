@@ -74,7 +74,7 @@ const fetchNotifications = async () => {
    return (
        <div className="notification-page-container">
          <Header />
-         <div className="background" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100 }}>
+         <div className="background" style={{ backgroundImage: `url(${backgroundImage})`, padding: '17vh 0', marginLeft:0,marginRight:0, marginBottom:0}}>
            <main className="notification-content">
              <div className="notification-container">
                <div className="notifications-header">
