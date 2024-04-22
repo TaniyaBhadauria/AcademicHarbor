@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const UserProfilePage = () => {
   const [userProfiles, setUserProfiles] = useState([
@@ -9,6 +10,28 @@ const UserProfilePage = () => {
     { id: '2', name: 'Emilia Stone', title: 'Graduate Student', phone: '+9876543210', role: 'University of Maryland Baltimore County', linkedin: 'linkedin.com/stoned',
     email: 'stone.d@example.com', profilePicture: 'https://media.istockphoto.com/id/831902150/photo/ive-solidified-my-name-in-the-business-world.jpg?s=612x612&w=0&k=20&c=GCkoeN4GXE9W3EgNmwnInZpvGEepUSPd7N8NMKGBGFs=' },
   ]);
+  const navigation = useNavigation();
+   const handleSignIn = () => {
+       navigation.navigate('SignIn');
+    };
+  const handleProjects = () => {
+  navigation.navigate('Projects');
+  };
+    const handleRepository = () => {
+      navigation.navigate('Repository');
+    }
+    const handleInbox = () => {
+      navigation.navigate('Inbox');
+   };
+
+   const handleNotifications = () => {
+    navigation.navigate('Notification');
+  };
+   const handleUserProfilePage = () => {
+    navigation.navigate('UserProfilePage');
+  };
+
+
   const [showMenu, setShowMenu] = useState(false);
 
   const renderItem = ({ item }) => (
@@ -38,14 +61,15 @@ const UserProfilePage = () => {
         </TouchableOpacity>
       </View>
       {showMenu && (
-        <View style={styles.menu}>
-          <Text style={styles.menuItem}>Repository</Text>
-          <Text style={styles.menuItem}>Projects</Text>
-          <Text style={styles.menuItem}>User Profiles</Text>
-          <Text style={styles.menuItem}>Inbox</Text>
-          <Text style={[styles.menuItem, styles.signIn]} >Sign In</Text>
-          <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
-        </View>
+         <View style={styles.menu}>
+                  <Text style={[styles.menuItem, styles.repository]} onPress={handleRepository}>Repository</Text>
+                  <Text style={styles.menuItem} onPress={handleProjects} >Projects</Text>
+                  <Text style={styles.menuItem} onPress={handleUserProfilePage}>User Profiles</Text>
+                  <Text style={styles.menuItem} onPress={handleInbox}>Inbox</Text>
+                  <Text style={styles.menuItem} onPress={handleNotifications}>Notification</Text>
+                  <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
+                  <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
+                </View>
       )}
 
       <View style={styles.content}>
