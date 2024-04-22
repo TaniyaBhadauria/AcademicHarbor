@@ -73,12 +73,14 @@
 }
 
 .login-container {
-  min-height: 80vh; /* Ensure login container takes up full viewport height */
+  min-height: 80vh; 
   display: flex;
-  align-items: center; /* Vertically center content */
+  align-items: center; 
+  margin-top: 0px;
 }
 .project-content{
-margin-bottom: 20px;
-    margin-right: 340px; /* Adjust left margin */
-    margin-top: 50px; /* Adjust top margin */
+    /* margin-bottom: 20px;
+    margin-right: 340px; 
+    margin-top: 50px;  */
+    margin-top: 0px;
 }

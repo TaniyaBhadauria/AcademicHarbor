@@ -84,7 +84,7 @@ const Messages: React.FC = () => {
   return (
     <div className="container">
       <NavigationHeader />
-      <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
+      <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})`,marginLeft:0,marginRight:0, marginBottom:0}}>
         <Layout style={{ minHeight: '100vh' }}>
           <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
             <div className="demo-logo-vertical" />
