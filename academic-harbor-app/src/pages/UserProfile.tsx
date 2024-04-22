@@ -133,6 +133,12 @@ const UserProfile: React.FC = () => {
     <div className="container">
       <NavigationHeader />
       <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100, marginLeft: 0, marginRight: 0 }}>
+      <div><h3> Welcome to the User Profiles Hub :
+
+           Discover detailed profiles of all members, featuring their name,
+           designation, contact details, projects and their education.
+           </h3>
+           </div>
         <header className="app-header">
           <AutoComplete
             value={searchValue}
@@ -146,7 +152,7 @@ const UserProfile: React.FC = () => {
         </header>
 
         {showResults && (
-          <Layout className="layout" style={{ minHeight: '50vh', minWidth: '100vh', marginRight: 100 }} >
+           <Layout className="layout" style={{ minHeight: '50vh', minWidth: '100vh' }}>
             <Header style={{ display: 'flex', alignItems: 'center' }}>
               <div className="logo" />
               <Menu
@@ -182,10 +188,9 @@ const UserProfile: React.FC = () => {
                             <span>{profile.phone}</span>
                           </div>
                           <div className="actions">
-                            <Button type="primary" icon={<FaPhoneSquare />} className="action-button">Call</Button>
+                            <Button type="primary" icon={<FaPhoneSquare />} style={{ marginRight: '8px' }} className="action-button">Call</Button>
                             {/* Modify the onClick handler to open the chat modal */}
-                            <Button type="primary" icon={<FaCommentAlt />} className="action-button" onClick={handleChatButtonClick}>Message</Button>
-                            <Button type="primary" icon={<FaEnvelopeSquare />} className="action-button" onClick={() => handleEmailButtonClick(profile)}>Email</Button>
+                            <Button type="primary" icon={<FaEnvelopeSquare />} style={{ marginRight: '8px' }} className="action-button" onClick={() => handleEmailButtonClick(profile)}>Email</Button>
                           </div>
                         </div>
                         <div className="form-container">
@@ -195,9 +200,6 @@ const UserProfile: React.FC = () => {
                             </Form.Item>
                             <Form.Item label="Contact Number">
                               <Input value={profile.phone} disabled />
-                            </Form.Item>
-                            <Form.Item label="User Title">
-                              <Input value={profile.role} disabled />
                             </Form.Item>
                             <Form.Item label="Linkedin">
                               <Input value={profile.linkedin} disabled />
@@ -267,7 +269,7 @@ const UserProfile: React.FC = () => {
                                                                     <div className="profile-picture">
                                                                       <img src={profile.profilePicture} alt="Profile" className="profile-img" />
                                                                     </div>
-                                                                    <h2>{userData.userName}</h2>
+                                                                    <h2>{profile.userName}</h2>
                                                                     <div className="detail">
                                                                       <span>{profile.role}</span>
                                                                     </div>
