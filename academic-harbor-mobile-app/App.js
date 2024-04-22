@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignInPage from './SignIn'
 import AcademicHarborPage from './AcademicHarbor'
+import RepositoryPage from './Repository'
 
 const Stack = createStackNavigator();
 
@@ -10,8 +11,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-  <Stack.Screen name="AcademicHarbor" component={AcademicHarborPage} /> 
+        <Stack.Screen name="AcademicHarbor" component={AcademicHarborPage} /> 
         <Stack.Screen name="SignIn" component={SignInPage} />
+        <Stack.Screen name="Repository" component={RepositoryPage} />
         {/* Add more screens here if needed */}
       </Stack.Navigator>
     </NavigationContainer>

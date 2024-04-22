@@ -4,10 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.bson.Document;
 import org.harbor.MongoDBExample;
@@ -140,11 +137,79 @@ public class AcademicHarborResource {
             return null;
         }
     }
+    @GET
+    @Path("/register")
+    public String registerUser(@QueryParam("username") String username,
+                                 @QueryParam("password") String password,
+                                 @QueryParam("email") String email,
+                                 @QueryParam("profilePicture") String profilePicture,
+                                 @QueryParam("linkedin") String linkedin,
+                                 @QueryParam("phone") String phone,
+                                 @QueryParam("resumeId") String resumeId,
+                                 @QueryParam("role") String role,
+                                 @QueryParam("registrationDate") String registrationDate) throws UnsupportedEncodingException {
+
+        // Connect to the MongoDB database
+        MongoCollection<Document> userCollection = new MongoDBExample().getCollection("User");
+
+        // Create a new user document
+        Document userDocument = new Document("userName", username)
+                .append("password", password)
+                .append("emailId", email)
+                .append("profilePicture", profilePicture)
+                .append("linkedin", linkedin)
+                .append("phone", phone)
+                .append("resumeId", resumeId)
+                .append("role", role)
+                .append("registrationDate", registrationDate);
+
+        // Insert the user document into the database
+        userCollection.insertOne(userDocument);
+
+        // Return success response
+        return "User registered successfully";
+    }
+    @POST
+    @Path("/update")
+    public String updateUser(@QueryParam("userId") String userId,
+                             @QueryParam("username") String username,
+                             @QueryParam("email") String email,
+                             @QueryParam("profilePicture") String profilePicture,
+                             @QueryParam("linkedin") String linkedin,
+                             @QueryParam("phone") String phone,
+                             @QueryParam("resumeId") String resumeId,
+                             @QueryParam("role") String role) throws UnsupportedEncodingException {
+
+        // Connect to the MongoDB database
+        MongoCollection<Document> userCollection = new MongoDBExample().getCollection("User");
+
+        // Create a query to find the user document by userId
+        Document query = new Document("userName", username);
+        Document userDocument = userCollection.find(query).first();
+        System.out.println(userDocument.getString("userName"));
+        // Create a document with updated user data
+        Document updateData = new Document("userName", username)
+                .append("emailId", email)
+                .append("profilePicture", profilePicture)
+                .append("linkedin", linkedin)
+                .append("phone", phone)
+                .append("resumeId", resumeId)
+                .append("role", role);
+
+        // Create a document with update operation
+        Document updateOperation = new Document("$set", updateData);
+
+        // Perform the update operation
+        userCollection.updateOne(query, updateOperation);
+
+        // Return success response
+        return "User updated successfully";
+    }
 
     // Helper method to convert a MongoDB Document to a User object
     private User documentToUser(Document document) {
         User user = new User();
-        user.setUserId(document.getInteger("userId"));
+       // user.setUserId(document.getInteger("userId"));
         user.setUserName(document.getString("userName"));
         user.setProfilePicture(document.getString("profilePicture"));
         user.setEmailId(document.getString("emailId"));
@@ -156,4 +221,5 @@ public class AcademicHarborResource {
         user.setRegistrationDate(document.getString("registrationDate"));
         return user;
     }
+
 }
