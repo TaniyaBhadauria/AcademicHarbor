@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignInPage from './SignIn'
 import AcademicHarborPage from './AcademicHarbor'
-
+import ProjectsPage from './Projects'
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -12,6 +12,7 @@ const App = () => {
       <Stack.Navigator>
   <Stack.Screen name="AcademicHarbor" component={AcademicHarborPage} /> 
         <Stack.Screen name="SignIn" component={SignInPage} />
+        <Stack.Screen name="Projects" component={ProjectsPage} />
         {/* Add more screens here if needed */}
       </Stack.Navigator>
     </NavigationContainer>

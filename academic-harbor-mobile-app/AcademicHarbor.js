@@ -10,7 +10,9 @@ const AcademicHarborPage = () => {
   const handleSignIn = () => {
      navigation.navigate('SignIn');
   };
-
+const handleProjects = () => {
+navigation.navigate('Projects');
+};
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -105,7 +107,7 @@ const AcademicHarborPage = () => {
       {showMenu && (
         <View style={styles.menu}>
           <Text style={styles.menuItem}>Repository</Text>
-          <Text style={styles.menuItem}>Projects</Text>
+          <Text style={styles.menuItem} onPress={handleProjects} >Projects</Text>
           <Text style={styles.menuItem}>User Profiles</Text>
           <Text style={styles.menuItem}>Inbox</Text>
           <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
