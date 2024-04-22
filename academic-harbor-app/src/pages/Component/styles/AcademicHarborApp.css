@@ -151,3 +151,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
 }
+
+.disabled-link {
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}

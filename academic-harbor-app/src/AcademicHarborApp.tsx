@@ -18,11 +18,14 @@ const AcademicHarborPage: React.FC = () => {
   const handleSignUp = () => {
     navigate('/signup');
   };
+  const handleReadMoreClick = () => {
+    navigate('/help');
+  };
 
   return (
     <div className="container">
       <NavigationHeader/>
-      <main className="content" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
+      <main className="content" style={{ backgroundImage: `url(${backgroundImage})`, padding: '17vh 0',marginLeft:0,marginRight:0}}>
         <section className="hero" >
           <h1>Welcome to AcademicHarbor</h1>
           <p>
@@ -36,7 +39,7 @@ const AcademicHarborPage: React.FC = () => {
           Sign up or log in to AcademicHarbor and unlock a world of possibilities. Whether you're a student eager to collaborate, a faculty member seeking cross-disciplinary innovation, or an external researcher ready to contribute, 
           AcademicHarbor welcomes you to a community that values collaboration, diversity, and the pursuit of knowledge.
           </p>
-          <button className="get-started">Read More</button>
+          <button className="get-started" onClick={handleReadMoreClick}>Read More</button>
         </section>
       </main>
 
