@@ -13,6 +13,10 @@ const AcademicHarborPage = () => {
 const handleProjects = () => {
 navigation.navigate('Projects');
 };
+  const handleRepository = () => {
+    navigation.navigate('Repository');
+  }
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -49,6 +53,9 @@ navigation.navigate('Projects');
       marginBottom: 10,
     },
     signIn: {
+      fontWeight: 'bold',
+    },
+    repository: {
       fontWeight: 'bold',
     },
     signUp: {
@@ -108,6 +115,8 @@ navigation.navigate('Projects');
         <View style={styles.menu}>
           <Text style={styles.menuItem}>Repository</Text>
           <Text style={styles.menuItem} onPress={handleProjects} >Projects</Text>
+          <Text style={[styles.menuItem, styles.repository]} onPress={handleRepository}>Repository</Text>
+          <Text style={styles.menuItem}>Projects</Text>
           <Text style={styles.menuItem}>User Profiles</Text>
           <Text style={styles.menuItem}>Inbox</Text>
           <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>

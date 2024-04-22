@@ -1,0 +1,19 @@
+.profile-img {
+  width: 150px; /* Adjust the size of the profile picture */
+  height: 150px; /* Adjust the size of the profile picture */
+  border-radius: 50%; /* Display the profile picture as a circle */
+}
+.profile-layout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-header {
+  flex: 1;
+  padding-right: 20px; /* Adjust spacing between profile header and form container */
+}
+
+.form-container {
+  flex: 1;
+  padding-left: 20px; /* Adjust spacing between form container and profile header */
+}

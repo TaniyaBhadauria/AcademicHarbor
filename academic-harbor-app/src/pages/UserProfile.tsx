@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaEnvelope, FaPhone, FaLinkedin, FaDownload, FaSearch } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaLinkedin, FaDownload, FaSearch, FaPhoneSquare, FaEnvelopeSquare, FaCommentAlt } from 'react-icons/fa';
+import { Modal, Breadcrumb, Layout, Menu, AutoComplete, Button, Form, Input } from 'antd';
 import NavigationHeader from './Component/Header';
 import backgroundImage from './images/background.png';
-import { Breadcrumb, Layout, Menu, AutoComplete, Button, theme } from 'antd';
 import './styles/UserProfile.css';
+import Chat from './Chat';
 
 const { Header, Content, Footer } = Layout;
 const { Option } = AutoComplete;
@@ -11,19 +12,28 @@ const { Option } = AutoComplete;
 interface UserProfileProps {
   userName: string;
   title: string;
-  email: string;
+  emailId: string;
   phone: string;
+  role: string;
+  profilePicture: string;
   linkedin: string;
 }
+
 const UserProfile: React.FC = () => {
- const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
   const [userProfiles, setUserProfiles] = useState<UserProfileProps[]>([]);
   const [filteredUserProfiles, setFilteredUserProfiles] = useState<UserProfileProps[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('1');
   const [searchValue, setSearchValue] = useState<string>('');
+  const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
+  const [emailForm] = Form.useForm();
+  const [selectedProfileEmail, setSelectedProfileEmail] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [myEmail, setMyEmail] = useState<string>('');
+  const [showChatModal, setShowChatModal] = useState(false); // Add state for chat modal visibility
+  const userDataString = sessionStorage.getItem('userData');
+  const userData = userDataString ? JSON.parse(userDataString) : null;
+   const [resumeData, setResumeData] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +51,7 @@ const UserProfile: React.FC = () => {
     };
 
     fetchData();
+    fetchResumeDetails();
   }, []);
 
   const handleMenuClick = (e: any) => {
@@ -51,6 +62,19 @@ const UserProfile: React.FC = () => {
     setSearchValue(value);
     filterUserProfiles(value);
   };
+   const fetchResumeDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:8082/hello-world/resumedetails?resumeID=${userData?.resumeId}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setResumeData(data);
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    };
+
 
   const filterUserProfiles = (searchValue: string) => {
     const filteredData = userProfiles.filter(profile =>
@@ -62,10 +86,10 @@ const UserProfile: React.FC = () => {
 
   const handleSearchButtonClick = () => {
     const filteredData = userProfiles.filter(profile =>
-          profile.userName.toLowerCase().includes(searchValue.toLowerCase())
-        );
-        setFilteredUserProfiles(filteredData);
-        setShowResults(true);
+      profile.userName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredUserProfiles(filteredData);
+    setShowResults(true);
     console.log("Selected user:", searchValue);
   };
 
@@ -75,10 +99,46 @@ const UserProfile: React.FC = () => {
     </Option>
   );
 
+  const handleEmailButtonClick = (profile: UserProfileProps) => {
+    setSelectedProfileEmail(profile.emailId);
+    setMyEmail(userData.emailId);
+    setUserEmail(profile.emailId);
+    setEmailModalVisible(true);
+  };
+
+  const handleEmailModalOk = () => {
+    setEmailModalVisible(false);
+  };
+
+  const handleEmailModalCancel = () => {
+    setEmailModalVisible(false);
+  };
+
+  const sendEmail = () => {
+    const values = emailForm.getFieldsValue();
+    console.log('Email Values:', values);
+    // Send email logic here
+    setEmailModalVisible(false);
+  };
+
+  const handleChatButtonClick = () => {
+    setShowChatModal(true); // Show chat modal
+  };
+
+  const handleChatModalClose = () => {
+    setShowChatModal(false); // Hide chat modal
+  };
+
   return (
     <div className="container">
       <NavigationHeader />
-      <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100,marginLeft:0,marginRight:0}}>
+      <div className="app" style={{ backgroundImage: `url(${backgroundImage})`, padding: 100, marginLeft: 0, marginRight: 0 }}>
+      <div><h3> Welcome to the User Profiles Hub :
+
+           Discover detailed profiles of all members, featuring their name,
+           designation, contact details, projects and their education.
+           </h3>
+           </div>
         <header className="app-header">
           <AutoComplete
             value={searchValue}
@@ -92,19 +152,19 @@ const UserProfile: React.FC = () => {
         </header>
 
         {showResults && (
-          <Layout className="layout" style={{ minHeight: '50vh', minWidth:'100vh', marginRight:100 }} >
+           <Layout className="layout" style={{ minHeight: '50vh', minWidth: '100vh' }}>
             <Header style={{ display: 'flex', alignItems: 'center' }}>
               <div className="logo" />
               <Menu
-               theme="dark"
-               mode="horizontal"
-               defaultSelectedKeys={['1']}
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={['1']}
                 style={{ flex: 1, minWidth: 0 }}
                 onClick={handleMenuClick}
                 items={[
                   { key: '1', label: 'About' },
-                  { key: '2', label: 'Projects/Papers' },
-                  { key: '3', label: 'Achievements' },
+                  { key: '2', label: 'Education' },
+                  { key: '3', label: 'Projects/Papers' },
                 ]}
               />
             </Header>
@@ -113,29 +173,132 @@ const UserProfile: React.FC = () => {
                 {activeTab === '1' && (
                   filteredUserProfiles.map((profile, index) => (
                     <div className="user-profile" key={index}>
-                      <div className="profile-header">
-                        <h2>{profile.userName}</h2>
-                        <p className="title">{profile.title}</p>
-                      </div>
-                      <div className="profile-details">
-                        <div className="detail">
-                          <FaEnvelope />
-                          <span>{profile.email}</span>
+                      <div className="profile-layout">
+                        <div className="profile-header">
+                          <div className="profile-picture">
+                            <img src={profile.profilePicture} alt="Profile" className="profile-img" />
+                          </div>
+                          <h2>{profile.userName}</h2>
+                          <p className="title">{profile.title}</p>
+                          <div className="detail">
+                            <span>{profile.role}</span>
+                          </div>
+                          <div className="detail">
+                            <FaPhone />
+                            <span>{profile.phone}</span>
+                          </div>
+                          <div className="actions">
+                            <Button type="primary" icon={<FaPhoneSquare />} style={{ marginRight: '8px' }} className="action-button">Call</Button>
+                            {/* Modify the onClick handler to open the chat modal */}
+                            <Button type="primary" icon={<FaEnvelopeSquare />} style={{ marginRight: '8px' }} className="action-button" onClick={() => handleEmailButtonClick(profile)}>Email</Button>
+                          </div>
                         </div>
-                        <div className="detail">
-                          <FaPhone />
-                          <span>{profile.phone}</span>
-                        </div>
-                        <div className="detail">
-                          <FaLinkedin />
-                          <a href={`https://linkedin.com/${profile.linkedin}`} target="_blank" rel="noopener noreferrer">
-                            {profile.linkedin}
-                          </a>
+                        <div className="form-container">
+                          <Form layout="vertical">
+                            <Form.Item label="User Name">
+                              <Input value={profile.userName} disabled />
+                            </Form.Item>
+                            <Form.Item label="Contact Number">
+                              <Input value={profile.phone} disabled />
+                            </Form.Item>
+                            <Form.Item label="Linkedin">
+                              <Input value={profile.linkedin} disabled />
+                            </Form.Item>
+                            <Form.Item label="University Email Address">
+                              <Input value={profile.emailId} disabled />
+                            </Form.Item>
+                          </Form>
                         </div>
                       </div>
                     </div>
                   ))
                 )}
+                {activeTab === '2' && (
+                         filteredUserProfiles.map((profile, index) => (
+                                <div className="user-profile">
+                                  <div className="profile-layout">
+                                    <div className="profile-header">
+                                      <div className="profile-picture">
+                                        <img src={profile.profilePicture} alt="Profile" className="profile-img" />
+                                      </div>
+                                      <h2>{profile.userName}</h2>
+                                      <div className="detail">
+                                        <span>{profile.role}</span>
+                                      </div>
+                                      <div className="detail">
+                                        <FaPhone />
+                                        <span>{profile.phone}</span>
+                                      </div>
+                                    </div>
+                                    <div className="form-container">
+                                      <Form
+                                        layout="vertical"
+                                        initialValues={resumeData}
+                                      >
+                                        <Form.Item label="Education" name="education">
+                                          {resumeData && resumeData.education.map((edu: any, index: number) => (
+                                            <div key={index}>
+                                              <Input.TextArea
+                                                autoSize={{ minRows: 3, maxRows: 5 }}
+                                                value={`${edu.degree} - ${edu.year} - ${edu.university}`}
+                                              />
+                                            </div>
+                                          ))}
+                                        </Form.Item>
+                                        <Form.Item label="Experience" name="experience">
+                                          {resumeData && resumeData.experience.map((edu: any, index: number) => (
+                                            <div key={index}>
+                                              <Input.TextArea
+                                                autoSize={{ minRows: 3, maxRows: 5 }}
+                                                value={`${edu.position} - ${edu.duration} - ${edu.company}`}
+                                              />
+                                            </div>
+                                          ))}
+                                        </Form.Item>
+                                      </Form>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                             ) }
+                              {activeTab === '3' && (
+                              filteredUserProfiles.map((profile, index) => (
+                                                              <div className="user-profile">
+                                                                <div className="profile-layout">
+                                                                  <div className="profile-header">
+                                                                    <div className="profile-picture">
+                                                                      <img src={profile.profilePicture} alt="Profile" className="profile-img" />
+                                                                    </div>
+                                                                    <h2>{profile.userName}</h2>
+                                                                    <div className="detail">
+                                                                      <span>{profile.role}</span>
+                                                                    </div>
+                                                                    <div className="detail">
+                                                                      <FaPhone />
+                                                                      <span>{profile.phone}</span>
+                                                                    </div>
+                                                                  </div>
+                                                                  <div className="form-container">
+                                                                    <Form
+                                                                      layout="vertical"
+                                                                      initialValues={resumeData}
+                                                                    >
+                                                                      <Form.Item label="Projects" name="projects">
+                                                                        {resumeData && resumeData.projects.map((edu: any, index: number) => (
+                                                                          <div key={index}>
+                                                                            <Input.TextArea
+                                                                              autoSize={{ minRows: 3, maxRows: 5 }}
+                                                                              value={`${edu.title} - ${edu.duration} - ${edu.description}`}
+                                                                            />
+                                                                          </div>
+                                                                        ))}
+                                                                      </Form.Item>
+                                                                    </Form>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            ))
+                                                                                         ) }
               </main>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
@@ -143,8 +306,63 @@ const UserProfile: React.FC = () => {
             </Footer>
           </Layout>
         )}
+
+        <Modal
+          title="Send Email"
+          visible={emailModalVisible}
+          onOk={handleEmailModalOk}
+          onCancel={handleEmailModalCancel}
+          footer={[
+            <Button key="back" onClick={handleEmailModalCancel}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={sendEmail}>
+              Send
+            </Button>,
+          ]}
+        >
+          <Form
+            form={emailForm}
+            layout="vertical"
+            name="email_form"
+          >
+            <Form.Item
+              name="to"
+              label="To"
+              initialValue={selectedProfileEmail}
+              rules={[{ required: true, message: 'Please input the recipient email!' }]}
+            >
+              <Input disabled />
+            </Form.Item>
+            <Form.Item
+              name="from"
+              label="From"
+              initialValue={myEmail}
+              rules={[{ required: true, message: 'Please input your email address!' }]}
+            >
+              <Input disabled />
+            </Form.Item>
+            <Form.Item
+              name="messageBody"
+              label="Message Body"
+              rules={[{ required: true, message: 'Please input the message body!' }]}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        {/* Render the chat component within a modal */}
+        <Modal
+          title="Chat"
+          visible={showChatModal}
+          onCancel={handleChatModalClose}
+          footer={null}
+        >
+          <Chat />
+        </Modal>
       </div>
-      </div>
+    </div>
   );
 }
 

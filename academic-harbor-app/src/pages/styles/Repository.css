@@ -1,132 +1,136 @@
 repo-container{
-    position: absolute;
+  position: absolute;
 }
 .text-1 {
-    position: absolute;
-    top: 100px; /* Adjust this value to your desired distance below the header */
-    left: 50px;
-    font-weight: bold;
-  }
+  position: absolute;
+  top: 100px; /* Adjust this value to your desired distance below the header */
+  left: 50px;
+  font-weight: bold;
+}
 
-  .add-project-btn{
-    cursor: pointer;
-    background-color: white;
-    color: black; /* You can adjust the color to your preference */
-    padding: 10px 20px; /* Adjust padding as needed */
-    border: none;
-    border-radius: 5px;
-    font-size: 16px; /* Adjust font size as needed */
-    margin-top: 20px; /* Adjust margin top as needed */
-    width: 300px;
-  }
+.add-project-btn, .filter-btn, .clear-btn{
+  cursor: pointer;
+  background-color: white;
+  color: black; /* You can adjust the color to your preference */
+  padding: 10px 20px; /* Adjust padding as needed */
+  border: none;
+  border-radius: 5px;
+  font-size: 16px; /* Adjust font size as needed */
+  margin-top: 20px; /* Adjust margin top as needed */
+  width: 300px;
+}
+.filter-btn, .clear-btn {
+  font-size: 15px;
+  width: 150px;
+  margin-left: 5px;
+}
 
-  .project-table {
-    width: 100%;
-    border-collapse: collapse;
-    /* border-radius: 10px;
-    overflow: hidden; */
-  }
-  
-  .project-table th {
-    background-color: #fafafa; /* Gray background for header row */
-    border-bottom: 2px solid #ffffff; /* Separator lines between header column names */
-  }
-  
-  .project-table th,
-  .project-table td {
-    padding: 10px; /* Adjust padding as needed */
-    vertical-align: top;
-    text-align: left;
-  }
-  
-  .project-table td {
-    border-bottom: 1px solid #cccccc; /* Separator lines after each row */
-  }
-  
-  .project-table tbody tr:last-child td {
-    border-bottom: none; 
-  }
-  
-  .project-table tbody td {
-    background-color: #ffffff;
-  }
+.project-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* border-radius: 10px;
+  overflow: hidden; */
+}
 
-  .details-btn {
-    background-color: black;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-left: 10px; /* Adjust the spacing between the button and the row */
-    margin-top: 1cap;
-    padding: 2.5px 10px; /* Adjust padding as needed */
-    border-radius: 15px;
-  }
-  
-  .details-btn i {
-    margin-right: 5px; /* Adjust the spacing between the icon and text */
-  }
+.project-table th {
+  background-color: #fafafa; /* Gray background for header row */
+  border-bottom: 2px solid #ffffff; /* Separator lines between header column names */
+}
 
-  .add-project-btn:hover {
-    background-color: #0056b3;
-  }
+.project-table th,
+.project-table td {
+  padding: 10px; /* Adjust padding as needed */
+  vertical-align: top;
+  text-align: left;
+}
+
+.project-table td {
+  border-bottom: 1px solid #cccccc; /* Separator lines after each row */
+}
+
+.project-table tbody tr:last-child td {
+  border-bottom: none; 
+}
+
+.project-table tbody td {
+  background-color: #ffffff;
+}
+
+.details-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px; /* Adjust the spacing between the button and the row */
+  margin-top: 1cap;
+  padding: 2.5px 10px; /* Adjust padding as needed */
+  border-radius: 15px;
+}
+
+.details-btn i {
+  margin-right: 5px; /* Adjust the spacing between the icon and text */
+}
+
+.add-project-btn:hover {
+  background-color: #0056b3;
+}
 
 
-  /* pop-up add project*/
-  .popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-  }
-  
-  .popup-content {
-    position: relative;
-  }
-  
-  .close {
-    position: absolute;
-    top: 0px;
-    left: 5px;
-    cursor: pointer;
-  }
+/* pop-up add project*/
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
 
-  .project-input{
-    left: 10px;
-  }
+.popup-content {
+  position: relative;
+}
 
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Ensure padding and border are included in the width */
-  }
-  
-  button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
+.close {
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  cursor: pointer;
+}
+
+.project-input{
+  left: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}

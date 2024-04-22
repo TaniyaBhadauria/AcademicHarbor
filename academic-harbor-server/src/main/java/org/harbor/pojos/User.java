@@ -87,4 +87,28 @@ public class User {
     public void setPhone(String phone) {
         this.phone=phone;
     }
+    public String getResumeId() {
+        return resumeId;
+    }
+
+    public void setResumeId(String resumeId) {
+        this.resumeId = resumeId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(String registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
 }
