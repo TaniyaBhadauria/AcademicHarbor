@@ -2,7 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from './images/background.png';
 import Header from './Component/Header';
+import { Modal } from 'antd';
 import './styles/Project.css';
+
+interface UserProfileProps {
+  userName: string;
+  title: string;
+  emailId: string;
+  phone: string;
+  role: string;
+  profilePicture: string;
+  linkedin: string;
+}
 
 interface ProjectFields {
   projectId: number;
@@ -11,6 +22,9 @@ interface ProjectFields {
   projectCoordinator: string;
   projectDepartment: string;
   concentration: string;
+  projectStatus: string;
+  startDate: string;
+  teamId: UserProfileProps[];
 }
 
 const Project: React.FC = () => {
@@ -24,6 +38,8 @@ const Project: React.FC = () => {
   const [projects, setProjects] = useState<ProjectFields[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<ProjectFields[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectFields | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,6 +106,16 @@ const Project: React.FC = () => {
     console.log('Saving:', project);
   };
 
+  const handleViewDetails = (project: ProjectFields) => {
+    setSelectedProject(project);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setSelectedProject(null);
+    setModalVisible(false);
+  };
+
   return (
     <div className="container">
       <Header />
@@ -135,7 +161,7 @@ const Project: React.FC = () => {
                   <p>Department: {project.projectDepartment}</p>
                   <p>Concentration: {project.concentration}</p>
                   <div className="project-actions">
-                    <button onClick={() => handleSave(project)}>View Details</button>
+                    <button onClick={() => handleViewDetails(project)}>View Details</button>
                     <button onClick={() => handleApply(project)}>Apply</button>
                     <button onClick={() => handleSave(project)}>Save</button>
                   </div>
@@ -148,6 +174,33 @@ const Project: React.FC = () => {
       <footer className="footer">
         <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
       </footer>
+      {selectedProject && (
+        <Modal
+          title={selectedProject.projectTitle}
+          visible={modalVisible}
+          onCancel={closeModal}
+          footer={null}
+        >
+          <p>Description: {selectedProject.projectDescription}</p>
+          <p>Coordinator: {selectedProject.projectCoordinator}</p>
+          <p>Department: {selectedProject.projectDepartment}</p>
+          <p>Concentration: {selectedProject.concentration}</p>
+          <p>Project Status: {selectedProject.projectStatus}</p>
+          <p>Start Date: {selectedProject.startDate}</p>
+          <div>
+            <h4>Team Members:</h4>
+            <ul>
+              {selectedProject.teamId.map((user, index) => (
+                <li key={index}>
+                  <div>{user.userName}</div>
+                  <div>{user.role}</div>
+                  {/* Add other user properties as needed */}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
