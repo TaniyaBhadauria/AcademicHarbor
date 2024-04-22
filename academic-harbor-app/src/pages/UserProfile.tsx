@@ -33,6 +33,7 @@ const UserProfile: React.FC = () => {
   const [showChatModal, setShowChatModal] = useState(false); // Add state for chat modal visibility
   const userDataString = sessionStorage.getItem('userData');
   const userData = userDataString ? JSON.parse(userDataString) : null;
+   const [resumeData, setResumeData] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +51,7 @@ const UserProfile: React.FC = () => {
     };
 
     fetchData();
+    fetchResumeDetails();
   }, []);
 
   const handleMenuClick = (e: any) => {
@@ -60,6 +62,19 @@ const UserProfile: React.FC = () => {
     setSearchValue(value);
     filterUserProfiles(value);
   };
+   const fetchResumeDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:8082/hello-world/resumedetails?resumeID=${userData?.resumeId}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setResumeData(data);
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    };
+
 
   const filterUserProfiles = (searchValue: string) => {
     const filteredData = userProfiles.filter(profile =>
@@ -142,8 +157,8 @@ const UserProfile: React.FC = () => {
                 onClick={handleMenuClick}
                 items={[
                   { key: '1', label: 'About' },
-                  { key: '2', label: 'Projects/Papers' },
-                  { key: '3', label: 'Achievements' },
+                  { key: '2', label: 'Education' },
+                  { key: '3', label: 'Projects/Papers' },
                 ]}
               />
             </Header>
@@ -196,6 +211,92 @@ const UserProfile: React.FC = () => {
                     </div>
                   ))
                 )}
+                {activeTab === '2' && (
+                         filteredUserProfiles.map((profile, index) => (
+                                <div className="user-profile">
+                                  <div className="profile-layout">
+                                    <div className="profile-header">
+                                      <div className="profile-picture">
+                                        <img src={profile.profilePicture} alt="Profile" className="profile-img" />
+                                      </div>
+                                      <h2>{profile.userName}</h2>
+                                      <div className="detail">
+                                        <span>{profile.role}</span>
+                                      </div>
+                                      <div className="detail">
+                                        <FaPhone />
+                                        <span>{profile.phone}</span>
+                                      </div>
+                                    </div>
+                                    <div className="form-container">
+                                      <Form
+                                        layout="vertical"
+                                        initialValues={resumeData}
+                                      >
+                                        <Form.Item label="Education" name="education">
+                                          {resumeData && resumeData.education.map((edu: any, index: number) => (
+                                            <div key={index}>
+                                              <Input.TextArea
+                                                autoSize={{ minRows: 3, maxRows: 5 }}
+                                                value={`${edu.degree} - ${edu.year} - ${edu.university}`}
+                                              />
+                                            </div>
+                                          ))}
+                                        </Form.Item>
+                                        <Form.Item label="Experience" name="experience">
+                                          {resumeData && resumeData.experience.map((edu: any, index: number) => (
+                                            <div key={index}>
+                                              <Input.TextArea
+                                                autoSize={{ minRows: 3, maxRows: 5 }}
+                                                value={`${edu.position} - ${edu.duration} - ${edu.company}`}
+                                              />
+                                            </div>
+                                          ))}
+                                        </Form.Item>
+                                      </Form>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                             ) }
+                              {activeTab === '3' && (
+                              filteredUserProfiles.map((profile, index) => (
+                                                              <div className="user-profile">
+                                                                <div className="profile-layout">
+                                                                  <div className="profile-header">
+                                                                    <div className="profile-picture">
+                                                                      <img src={profile.profilePicture} alt="Profile" className="profile-img" />
+                                                                    </div>
+                                                                    <h2>{userData.userName}</h2>
+                                                                    <div className="detail">
+                                                                      <span>{profile.role}</span>
+                                                                    </div>
+                                                                    <div className="detail">
+                                                                      <FaPhone />
+                                                                      <span>{profile.phone}</span>
+                                                                    </div>
+                                                                  </div>
+                                                                  <div className="form-container">
+                                                                    <Form
+                                                                      layout="vertical"
+                                                                      initialValues={resumeData}
+                                                                    >
+                                                                      <Form.Item label="Projects" name="projects">
+                                                                        {resumeData && resumeData.projects.map((edu: any, index: number) => (
+                                                                          <div key={index}>
+                                                                            <Input.TextArea
+                                                                              autoSize={{ minRows: 3, maxRows: 5 }}
+                                                                              value={`${edu.title} - ${edu.duration} - ${edu.description}`}
+                                                                            />
+                                                                          </div>
+                                                                        ))}
+                                                                      </Form.Item>
+                                                                    </Form>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            ))
+                                                                                         ) }
               </main>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
