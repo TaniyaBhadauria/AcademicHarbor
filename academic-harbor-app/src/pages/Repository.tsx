@@ -96,23 +96,48 @@ const Repository: React.FC = () => {
         <br />
         {isFormVisible && (
           <div className="popup">
-            <div className="popup-content">
+            <div className="popup-content" style={{ maxHeight: '400px', overflowY: 'auto', padding: '20px' }}>
               <span className="close" onClick={toggleFormVisibility}>&times;</span><br /><br />
               <form>
                 <div className="form-group">
-                  <label htmlFor="project-name">Project Name:</label>
-                  <input className="project-input" id="project-name" type="text" />
+                  <label htmlFor="project-name">Project Title:</label>
+                  <input className="project-input" id="project-name" type="text" placeholder="Project Title" />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="project-contributors">Project Contributors:</label>
-                  <input id="project-contributors" type="text" />
+                  <label htmlFor="project-description">Project Description:</label>
+                  <textarea className="textbox-input" id="project-description" placeholder="Project Description"></textarea>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="start-date">Start Date:</label>
+                  <input id="start-date" type="date" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="end-date">End Date:</label>
+                  <input id="end-date" type="date" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="project-coordinator">Project Coordinator:</label>
+                  <input id="project-coordinator" type="text" placeholder="Project Coordinator" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="team-name">Team Name:</label>
-                  <input id="team-name" type="text" />
+                  <input id="team-name" type="text" placeholder="Team Name" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="project-department">Project Department:</label>
+                  <input id="project-department" type="text" placeholder="Project Department" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="concentration">Concentration:</label>
+                  <input id="concentration" type="text" placeholder="Concentration" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="project-status">Project Status:</label>
+                  <input id="project-status" type="text" placeholder="Project Status" />
                 </div>
                 <button type="submit">Submit</button>
               </form>
+
             </div>
           </div>
         )}
@@ -129,7 +154,7 @@ const Repository: React.FC = () => {
                 value={searchTerm}
                 onChange={handleSearchInputChange}
               />
-              
+
             </div>
           )}
         </div>
