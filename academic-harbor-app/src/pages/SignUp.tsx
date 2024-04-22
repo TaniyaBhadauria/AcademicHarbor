@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from './images/background.png';
 import Header from './Component/Header';
-import './styles/SignUp.css'; // Import your custom CSS for sign-up page styling
 import { Button, Form, Input } from 'antd';
 import { FaUserPlus } from 'react-icons/fa';
 
 const SignUp: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
   const onFinish = async (values: any) => {
     try {
       const response = await fetch(`http://localhost:8082/hello-world/register?username=${values.username}&password=${values.password}&email=${values.email}`);
@@ -25,13 +22,10 @@ const SignUp: React.FC = () => {
       console.error('Error registering user:', error);
       // handle registration failure
     }
-
   };
-
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
   return (
     <div className="container">
       <Header />
@@ -77,31 +71,15 @@ const SignUp: React.FC = () => {
             <Input.Password />
           </Form.Item>
 
-          <div className="form-group">
-            <label>First Name</label>
-            <input type="text" className="form-control" placeholder="Enter first name" />
-          </div>
-
-          <div className="form-group">
-            <label>Last Name</label>
-            <input type="text" className="form-control" placeholder="Enter last name" />
-          </div>
-
-          <div className="form-group">
-            <label>Email Address</label>
-            <input type="email" className="form-control" placeholder="Enter email" />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" className="form-control" placeholder="Enter password" />
-          </div>
-
-          <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
-          <p className="forgot-password text-right">
-            Already registered? <a href="/sign-in">Sign in</a>
-          </p>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit" className='custom-button' style={{ backgroundColor: 'black', color: 'white' }}>
+              <FaUserPlus className="icon" />Sign Up
+            </Button>
+          </Form.Item>
         </Form>
+        <p className="forgot-password text-right">
+          Already a member? <a href="/login">Sign in</a>
+        </p>
       </div>
       <footer className="footer">
         <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
@@ -109,5 +87,4 @@ const SignUp: React.FC = () => {
     </div>
   );
 };
-
 export default SignUp;
