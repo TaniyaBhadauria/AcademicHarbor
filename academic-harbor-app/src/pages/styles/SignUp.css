@@ -48,3 +48,26 @@
 .signup-form .forgot-password a {
   color: #007bff; /* Link color */
 }
+  .password-toggle {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  .remember-me {
+    margin-bottom: 10px;
+  }
+
+  .forgot-password,
+  .sign-up {
+    margin-top: 10px;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+  
+  /* Adjust styling as needed */
+  
