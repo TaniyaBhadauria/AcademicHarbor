@@ -19,6 +19,26 @@ const Repository = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [projects, setProjects] = useState([]);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+ const handleSignIn = () => {
+     navigation.navigate('SignIn');
+  };
+const handleProjects = () => {
+navigation.navigate('Projects');
+};
+  const handleRepository = () => {
+    navigation.navigate('Repository');
+  }
+  const handleInbox = () => {
+    navigation.navigate('Inbox');
+ };
+
+ const handleNotifications = () => {
+  navigation.navigate('Notification');
+};
+ const handleUserProfilePage = () => {
+  navigation.navigate('UserProfilePage');
+};
+
 
   // Function to toggle the visibility of the form
   const toggleFormVisibility = () => {
@@ -256,12 +276,13 @@ const Repository = () => {
       </View>
       {showMenu && (
         <View style={styles.menu}>
-          <Text style={styles.menuItem}>Repository</Text>
-          <Text style={styles.menuItem}>Projects</Text>
-          <Text style={styles.menuItem}>User Profiles</Text>
-          <Text style={styles.menuItem}>Inbox</Text>
-          <Text style={[styles.menuItem, styles.signIn]}>Sign In</Text>
-          <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
+          <Text style={[styles.menuItem, styles.repository]} onPress={handleRepository}>Repository</Text>
+                    <Text style={styles.menuItem} onPress={handleProjects} >Projects</Text>
+                    <Text style={styles.menuItem} onPress={handleUserProfilePage}>User Profiles</Text>
+                    <Text style={styles.menuItem} onPress={handleInbox}>Inbox</Text>
+                    <Text style={styles.menuItem} onPress={handleNotifications}>Notification</Text>
+                    <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
+                    <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
         </View>
       )}
 

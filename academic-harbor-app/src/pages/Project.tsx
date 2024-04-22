@@ -119,7 +119,7 @@ const Project: React.FC = () => {
   return (
     <div className="container">
       <Header />
-      <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` , padding: '17vh 0', marginLeft:0,marginRight:0, marginBottom:0}}>
+      <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
         <main className="project-content">
           <h1>Discover a world of collaborations!</h1>
           <div className="filters">

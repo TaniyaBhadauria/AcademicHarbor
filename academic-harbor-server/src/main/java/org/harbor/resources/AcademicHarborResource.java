@@ -189,6 +189,56 @@ public class AcademicHarborResource {
         // Return success response
         return "User registered successfully";
     }
+    @GET
+    @Path("/messages-inbox")
+    @Timed
+    public List<Messages> getMessageDetails(@QueryParam("recipientId") String recipientId) throws UnsupportedEncodingException {
+            FindIterable<Document> documents = new MongoDBExample().getNotifications("Messages");
+            List<Messages> messageList = new ArrayList<>();
+            MongoCursor<Document> cursor = documents.iterator();
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                if (recipientId.equals(doc.getString("recipientId"))) {
+                    Messages message = new Messages(
+                            doc.getString("messageId"),
+                            doc.getString("description"),
+                            doc.getString("senderId"),
+                            doc.getString("recipientId"),
+                            doc.getString("subject"),
+                            doc.getString("body"),
+                            doc.getString("timeStamp"),
+                            doc.getString("attachmentId")
+                    );
+                    messageList.add(message);
+                }
+            }
+            return messageList;
+    }
+    @GET
+    @Path("/messages-outbox")
+    @Timed
+    public List<Messages> getOutboxMessageDetails(@QueryParam("senderId") String senderId) throws UnsupportedEncodingException {
+        FindIterable<Document> documents = new MongoDBExample().getNotifications("Messages");
+        List<Messages> messageList = new ArrayList<>();
+        MongoCursor<Document> cursor = documents.iterator();
+        while (cursor.hasNext()) {
+            Document doc = cursor.next();
+            if (senderId.equals(doc.getString("senderId"))) {
+                Messages message = new Messages(
+                        doc.getString("messageId"),
+                        doc.getString("description"),
+                        doc.getString("senderId"),
+                        doc.getString("recipientId"),
+                        doc.getString("subject"),
+                        doc.getString("body"),
+                        doc.getString("timeStamp"),
+                        doc.getString("attachmentId")
+                );
+                messageList.add(message);
+            }
+        }
+        return messageList;
+    }
     @POST
     @Path("/update")
     public String updateUser(@QueryParam("userId") String userId,
