@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from './images/background.png';
 import Header from './Component/Header';
@@ -7,6 +8,7 @@ import { FaUserPlus } from 'react-icons/fa';
 const SignUp: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
   const onFinish = async (values: any) => {
     try {
       const response = await fetch(`http://localhost:8082/hello-world/register?username=${values.username}&password=${values.password}&email=${values.email}`);
@@ -22,10 +24,13 @@ const SignUp: React.FC = () => {
       console.error('Error registering user:', error);
       // handle registration failure
     }
+
   };
+
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
   return (
     <div className="container">
       <Header />
@@ -87,4 +92,5 @@ const SignUp: React.FC = () => {
     </div>
   );
 };
+
 export default SignUp;
