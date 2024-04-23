@@ -92,7 +92,6 @@ navigation.navigate('Projects');
     project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Styles
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -173,7 +172,6 @@ navigation.navigate('Projects');
       bottom: 0,
       left: 0,
       right: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
       alignItems: "center",
       justifyContent: "center",
     },
@@ -181,6 +179,7 @@ navigation.navigate('Projects');
       backgroundColor: "#fff",
       padding: 20,
       borderRadius: 10,
+      width: 300, // Adjust width as needed
     },
     closeButton: {
       position: "absolute",
@@ -230,11 +229,6 @@ navigation.navigate('Projects');
       padding: 10,
       borderRadius: 4,
     },
-    popupContent: {
-      backgroundColor: "#fff",
-      padding: 20,
-      borderRadius: 10,
-    },
     formTitle: {
       fontSize: 20,
       fontWeight: "bold",
@@ -260,6 +254,7 @@ navigation.navigate('Projects');
       fontWeight: "bold",
     },
   });
+  
 
   // Return JSX
   return (
@@ -300,7 +295,8 @@ navigation.navigate('Projects');
           <Text style={styles.addProjectButtonText}>Add a new project</Text>
         </TouchableOpacity>
         {isFormVisible && (
-            <View style={styles.popup}>
+            <View style={[styles.popup, styles.formContainer]}>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
               <View style={styles.popupContent}>
                 <TouchableOpacity
                   style={styles.closeButton}
@@ -316,7 +312,7 @@ navigation.navigate('Projects');
                   // value={...}
                 />
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, styles.multilineInput]}
                   placeholder="Project Description"
                   multiline
                   // onChangeText={...}
@@ -370,7 +366,8 @@ navigation.navigate('Projects');
                   <Text style={styles.buttonText}>Add Project</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </ScrollView>
+          </View>
 
         )}
       </View>
