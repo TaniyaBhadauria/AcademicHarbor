@@ -19,6 +19,25 @@ const SignInPage = () => {
       console.log('Invalid username or password');
     }
   };
+
+  const handleProjects = () => {
+  navigation.navigate('Projects');
+  };
+    const handleRepository = () => {
+      navigation.navigate('Repository');
+    }
+    const handleInbox = () => {
+      navigation.navigate('Inbox');
+   };
+
+   const handleNotifications = () => {
+    navigation.navigate('Notification');
+  };
+   const handleUserProfilePage = () => {
+    navigation.navigate('UserProfilePage');
+  };
+
+
   const [showMenu, setShowMenu] = useState(false);
   const navigation = useNavigation();
 
@@ -203,12 +222,13 @@ const SignInPage = () => {
       </View>
       {showMenu && (
         <View style={styles.menu}>
-          <Text style={styles.menuItem}>Repository</Text>
-          <Text style={styles.menuItem}>Projects</Text>
-          <Text style={styles.menuItem}>User Profiles</Text>
-          <Text style={styles.menuItem}>Inbox</Text>
-          <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
-          <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
+          <Text style={[styles.menuItem, styles.repository]} onPress={handleRepository}>Repository</Text>
+                    <Text style={styles.menuItem} onPress={handleProjects} >Projects</Text>
+                    <Text style={styles.menuItem} onPress={handleUserProfilePage}>User Profiles</Text>
+                    <Text style={styles.menuItem} onPress={handleInbox}>Inbox</Text>
+                    <Text style={styles.menuItem} onPress={handleNotifications}>Notification</Text>
+                    <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
+                    <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
         </View>
       )}
 
