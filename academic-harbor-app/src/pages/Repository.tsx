@@ -187,6 +187,9 @@ const Repository: React.FC = () => {
           </tbody>
         </table>
       </div>
+      <footer className="footer">
+                    <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
+                  </footer>
     </div>
   );
 };
