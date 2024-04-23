@@ -89,12 +89,16 @@ repo-container{
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   width: 50%;
-  height: 60%;
+}
+
+.textbox-input {
+  width: 50%;
+  height: 50%;
 }
 
 .popup-content {
   position: relative;
-  max-height: 0px; /* Set the maximum height of the popup content */
+  max-height: 400px; /* Set the maximum height of the popup content */
   overflow-y: auto; /* Add vertical scroll bar if content exceeds the maximum height */
   padding: 20px; /* Add padding to the content */
 }

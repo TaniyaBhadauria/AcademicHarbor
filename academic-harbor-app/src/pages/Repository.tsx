@@ -105,7 +105,7 @@ const Repository: React.FC = () => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="project-description">Project Description:</label>
-                  <textarea id="project-description" placeholder="Project Description"></textarea>
+                  <textarea className="textbox-input" id="project-description" placeholder="Project Description"></textarea>
                 </div>
                 <div className="form-group">
                   <label htmlFor="start-date">Start Date:</label>
@@ -137,6 +137,7 @@ const Repository: React.FC = () => {
                 </div>
                 <button type="submit">Submit</button>
               </form>
+
             </div>
           </div>
         )}
