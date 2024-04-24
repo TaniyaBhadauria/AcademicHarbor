@@ -25,7 +25,7 @@ const AcademicHarborPage: React.FC = () => {
   return (
     <div className="container">
       <NavigationHeader/>
-      <main className="content" style={{ backgroundImage: `url(${backgroundImage})`, padding: '17vh 0',marginLeft:0,marginRight:0}}>
+      <main className="content" style={{ backgroundImage: `url(${backgroundImage})`, padding: '13vh 200px',marginLeft:0,marginRight:0}}>
         <section className="hero" >
           <h1>Welcome to AcademicHarbor</h1>
           <p>
