@@ -230,8 +230,11 @@ public class AcademicHarborResource {
 
         // Extract the messageId field from the document
         String messageId = largestMessage.getString("messageId");
+        int messageIdAsInt = Integer.parseInt(messageId);
+
+        String messageIdAgainAsString = Integer.toString(messageIdAsInt+1);
         // Create a new document for the message
-        Document messageDocument = new Document("messageId", messageId)
+        Document messageDocument = new Document("messageId", messageIdAgainAsString)
                 .append("description", description)
                 .append("senderId", senderId)
                 .append("recipientId", recipientId)
