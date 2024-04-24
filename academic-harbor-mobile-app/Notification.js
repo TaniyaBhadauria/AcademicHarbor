@@ -15,6 +15,9 @@ const NotificationPage = () => {
    const handleSignIn = () => {
        navigation.navigate('SignIn');
     };
+      const handleSignUp = () => {
+         navigation.navigate('SignUpPage');
+      };
   const handleProjects = () => {
   navigation.navigate('Projects');
   };
@@ -60,7 +63,7 @@ const [showMenu, setShowMenu] = useState(false);
                     <Text style={styles.menuItem} onPress={handleInbox}>Inbox</Text>
                     <Text style={styles.menuItem} onPress={handleNotifications}>Notification</Text>
                     <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
-                    <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
+                    <Text style={[styles.menuItem, styles.signUp]} onPress={handleSignUp}>Sign Up</Text>
         </View>
       )}
 
