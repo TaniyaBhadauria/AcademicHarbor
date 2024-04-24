@@ -151,6 +151,7 @@ const Project: React.FC = () => {
             />
             <button onClick={handleSearch}>Search</button>
           </div>
+
           {showResults && (
             <div className="projects">
               {filteredProjects.map((project) => (

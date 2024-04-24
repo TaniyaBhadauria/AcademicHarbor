@@ -100,9 +100,9 @@ const UserProfile: React.FC = () => {
   );
 
   const handleEmailButtonClick = (profile: UserProfileProps) => {
-    setSelectedProfileEmail(profile.emailId);
-    setMyEmail(userData.emailId);
-    setUserEmail(profile.emailId);
+    setSelectedProfileEmail(profile.userName);
+    setMyEmail(userData.userName);
+    setUserEmail(profile.userName);
     setEmailModalVisible(true);
   };
 
@@ -114,9 +114,24 @@ const UserProfile: React.FC = () => {
     setEmailModalVisible(false);
   };
 
-  const sendEmail = () => {
+  const sendEmail = async (subject: string, messageBody: string) => {
     const values = emailForm.getFieldsValue();
+    try{
+    const response = await fetch(`http://localhost:8082/hello-world/send-message?description=${values.subject}&senderId=${values.from}&recipientId=${values.to}&subject=${values.subject}&body=${values.messageBody}`);
+          if (response.ok) {
+            // Handle success response
+            console.log('Email sent successfully');
+          } else {
+            // Handle error response
+            console.error('Failed to send email:', response);
+          }
+        } catch (error) {
+          // Handle validation errors
+          console.error('Error sending email:', error);
+        }
+
     console.log('Email Values:', values);
+    console.log('Email Values:', subject);
     // Send email logic here
     setEmailModalVisible(false);
   };
@@ -316,7 +331,7 @@ const UserProfile: React.FC = () => {
             <Button key="back" onClick={handleEmailModalCancel}>
               Cancel
             </Button>,
-            <Button key="submit" type="primary" onClick={sendEmail}>
+            <Button key="submit" type="primary" onClick={() => sendEmail(emailForm.getFieldValue('subject'), emailForm.getFieldValue('messageBody'))}>
               Send
             </Button>,
           ]}
@@ -342,6 +357,13 @@ const UserProfile: React.FC = () => {
             >
               <Input disabled />
             </Form.Item>
+            <Form.Item
+                          name="subject"
+                          label="Subject"
+                          rules={[{ required: true, message: 'Please input the subject of mail!' }]}
+                        >
+                          <Input.TextArea rows={2} />
+                        </Form.Item>
             <Form.Item
               name="messageBody"
               label="Message Body"
