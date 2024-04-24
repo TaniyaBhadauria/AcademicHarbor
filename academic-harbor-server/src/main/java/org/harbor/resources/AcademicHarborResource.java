@@ -8,14 +8,20 @@ import com.mongodb.client.model.Filters;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.eclipse.jetty.server.Response;
 import org.harbor.MongoDBExample;
 import org.harbor.pojos.*;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static com.mongodb.client.model.Filters.exists;
+import static com.mongodb.client.model.Sorts.descending;
 
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
@@ -189,6 +195,58 @@ public class AcademicHarborResource {
         // Return success response
         return "User registered successfully";
     }
+
+    @GET
+    @Path("/send-message")
+    public String sendMessage(
+                               @QueryParam("description") String description,
+                               @QueryParam("senderId") String senderId,
+                               @QueryParam("recipientId") String recipientId,
+                               @QueryParam("subject") String subject,
+                               @QueryParam("body") String body,
+                               @QueryParam("resumeId") String resumeId,
+                               @QueryParam("role") String role,
+                               @QueryParam("registrationDate") String registrationDate) throws UnsupportedEncodingException {
+
+        // Connect to the MongoDB database
+        MongoCollection<Document> userCollection = new MongoDBExample().getCollection("Messages");
+
+        LocalDateTime now = LocalDateTime.now();
+
+        // Define the formatter for the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        // Format the timestamp into the desired string format
+        String formattedTimestamp = now.format(formatter);
+        Bson filter = exists("messageId");
+
+        // Find the document with the largest messageId
+        FindIterable<Document> result = userCollection.find(filter)
+                .sort(descending("messageId"))
+                .limit(1);
+
+        // Get the first document from the result
+        Document largestMessage = result.first();
+
+        // Extract the messageId field from the document
+        String messageId = largestMessage.getString("messageId");
+        // Create a new document for the message
+        Document messageDocument = new Document("messageId", messageId)
+                .append("description", description)
+                .append("senderId", senderId)
+                .append("recipientId", recipientId)
+                .append("subject",subject)
+                .append("body", body)
+                .append("timeStamp", formattedTimestamp)
+                .append("attachmentId", "attachmentId128");
+
+        // Insert the user document into the database
+        userCollection.insertOne(messageDocument);
+
+        // Return success response
+        return "User registered successfully";
+    }
+
     @GET
     @Path("/messages-inbox")
     @Timed
