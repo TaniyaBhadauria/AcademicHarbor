@@ -49,8 +49,9 @@ const Header: React.FC<HeaderProps> = () => {
         <nav className="navbar">
           <ul className="navbar-left">
             <li><a href="/" ><img src={homebutton} alt="Home Logo" height='15'/> AcademicHarbor</a></li>
-            <li><a href="/repository">Repository</a></li>
             <li><a href="/projects">Projects</a></li>
+            <li><a href="/repository">Repository</a></li>
+
             {isLoggedIn ? (
               <React.Fragment>
             <li><a href="/user_profile">User Profiles</a></li>

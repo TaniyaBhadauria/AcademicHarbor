@@ -66,9 +66,9 @@ const Project: React.FC = () => {
     const professorStudentRoles = Array.from(new Set(data.map(project => project.projectCoordinator))); // Assuming fixed values for this dropdown
     const concentrations = Array.from(new Set(data.map(project => project.concentration)));
 
-    setDepartmentOptions(['', ...departments]);
-    setProjectCoordinatorOptions(['', ...professorStudentRoles]);
-    setConcentrationOptions(['', ...concentrations]);
+    setDepartmentOptions([...departments]);
+    setProjectCoordinatorOptions([ ...professorStudentRoles]);
+    setConcentrationOptions([ ...concentrations]);
   };
 
   const handleSearch = () => {
