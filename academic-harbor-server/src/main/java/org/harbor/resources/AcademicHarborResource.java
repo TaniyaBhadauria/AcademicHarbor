@@ -177,15 +177,28 @@ public class AcademicHarborResource {
 
         // Connect to the MongoDB database
         MongoCollection<Document> userCollection = new MongoDBExample().getCollection("User");
+        Bson filter = exists("userId");
+
+        // Find the document with the largest messageId
+        FindIterable<Document> result = userCollection.find(filter)
+                .sort(descending("userId"))
+                .limit(1);
+
+        // Get the first document from the result
+        Document largestMessage = result.first();
+
+        // Extract the messageId field from the document
+        int messageId = largestMessage.getInteger("userId");
 
         // Create a new user document
         Document userDocument = new Document("userName", username)
+                .append("userId", messageId+1)
                 .append("password", password)
                 .append("emailId", email)
                 .append("profilePicture", profilePicture)
                 .append("linkedin", linkedin)
                 .append("phone", phone)
-                .append("resumeId", resumeId)
+                .append("resumeId", "123456788")
                 .append("role", role)
                 .append("registrationDate", registrationDate);
 
