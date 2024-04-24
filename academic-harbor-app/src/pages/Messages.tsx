@@ -169,7 +169,7 @@ const Messages: React.FC = () => {
                 )}
                 {selectedSentUser && (
                   <div>
-                    <h3>From: {selectedSentMessage?.user}</h3>
+                    <h3>To: {selectedSentMessage?.user}</h3>
                     <p>Subject: {selectedSentMessage?.subject}</p>
                     <p>Date: {selectedSentMessage?.timeStamp}</p>
                     <p>Message: {selectedSentMessage?.message}</p>
