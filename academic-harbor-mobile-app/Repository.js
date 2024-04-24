@@ -28,6 +28,9 @@ const Repository = () => {
 const handleProjects = () => {
 navigation.navigate('Projects');
 };
+const handleHome = () => {
+  navigation.navigate('AcademicHarbor');
+}
   const handleRepository = () => {
     navigation.navigate('Repository');
   }
@@ -41,6 +44,7 @@ navigation.navigate('Projects');
  const handleUserProfilePage = () => {
   navigation.navigate('UserProfilePage');
 };
+
 
 
   // Function to toggle the visibility of the form
@@ -182,7 +186,7 @@ navigation.navigate('Projects');
       backgroundColor: "#fff",
       padding: 20,
       borderRadius: 10,
-      width: 300, // Adjust width as needed
+      width: 300,
     },
     closeButton: {
       position: "absolute",
@@ -266,7 +270,7 @@ navigation.navigate('Projects');
         <Image source={require("./images/umbc_logo.png")} style={styles.logo} />
       </View>
       <View style={styles.header}>
-        <Ionicons name="home" size={24} color="white" style={styles.icon} />
+        <Ionicons name="home" size={24} color="white" style={styles.icon} onPress={handleHome} />
         <Text style={styles.headerText}>AcademicHarbor</Text>
         <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
           <Ionicons name="menu" size={24} color="white" style={styles.icon} />

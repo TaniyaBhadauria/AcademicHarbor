@@ -38,6 +38,9 @@ const SignInPage = () => {
    const handleUserProfilePage = () => {
     navigation.navigate('UserProfilePage');
   };
+  const handleHome = () => {
+    navigation.navigate('AcademicHarbor');
+  }
 
 
   const [showMenu, setShowMenu] = useState(false);
@@ -216,7 +219,7 @@ const SignInPage = () => {
         <Image source={require('./images/umbc_logo.png')} style={styles.logo} />
       </View>
       <View style={styles.header}>
-        <Ionicons name="home" size={24} color="white" style={styles.icon} />
+        <Ionicons name="home" size={24} color="white" style={styles.icon} onPress={handleHome} />
         <Text style={styles.headerText}>AcademicHarbor</Text>
         <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
           <Ionicons name="menu" size={24} color="white" style={styles.icon} />

@@ -24,7 +24,7 @@ const App: React.FC = () => {
           <Route path="/messages" element={<Messages />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/help" element={<Help/>}/>
+          <Route path="/faq" element={<Help/>}/>
         </Routes>
     </Router>
   );

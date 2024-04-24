@@ -1,0 +1,48 @@
+/* Help.css */
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: start;
+    margin-bottom: 30px;
+}
+
+.section-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(248, 248, 248, 0.7); /* Change the last value (0.8) to adjust transparency */
+    padding: 20px;
+    border-radius: 10px; /* Add some border-radius for visual appeal */
+    width: 50%;
+    margin: 20px auto 0; /* Set margin-top to 20px, remove margin-bottom */
+}
+
+.section-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.back-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+.back-button::before {
+    margin-right: 5px;
+}
