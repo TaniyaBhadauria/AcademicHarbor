@@ -6,6 +6,7 @@ import AcademicHarborPage from './AcademicHarbor'
 import ProjectsPage from './Projects'
 import RepositoryPage from './Repository'
 import MessagesPage from './Inbox'
+import SignUpPage from './SignUp'
 import Notification from './Notification'
 import UserProfilePage from './UserProfile'
 
@@ -21,6 +22,7 @@ const App = () => {
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="UserProfilePage" component={UserProfilePage} />
         <Stack.Screen name="Projects" component={ProjectsPage} />
+        <Stack.Screen name="SignUpPage" component={SignUpPage} />
         <Stack.Screen name="Repository" component={RepositoryPage} />
         {/* Add more screens here if needed */}
       </Stack.Navigator>

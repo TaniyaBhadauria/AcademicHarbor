@@ -164,15 +164,22 @@ const Messages: React.FC = () => {
                     <h3>From: {selectedMessage?.user}</h3>
                     <p>Subject: {selectedMessage?.subject}</p>
                     <p>Date: {selectedMessage?.timeStamp}</p>
-                    <p>Message: {selectedMessage?.message}</p>
+                    <p>Message: <br />
+                               {selectedMessage?.message.split('\n').map((line:any, index:any) => (
+                                 <React.Fragment key={index}>{line}<br /></React.Fragment>
+                               ))}</p>
                   </div>
                 )}
                 {selectedSentUser && (
                   <div>
-                    <h3>From: {selectedSentMessage?.user}</h3>
+                    <h3>To: {selectedSentMessage?.user}</h3>
                     <p>Subject: {selectedSentMessage?.subject}</p>
                     <p>Date: {selectedSentMessage?.timeStamp}</p>
-                    <p>Message: {selectedSentMessage?.message}</p>
+                    <p>Message: <br />
+                                                      {selectedSentMessage?.message.split('\n').map((line:any, index:any) => (
+                                                        <React.Fragment key={index}>{line}<br /></React.Fragment>
+                                                      ))}
+</p>
                   </div>
                 )}
               </div>

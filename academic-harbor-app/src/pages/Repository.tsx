@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Modal } from 'antd';
 import backgroundImage from './images/background.png';
 import Header from './Component/Header';
 import './styles/Repository.css';
@@ -18,7 +19,7 @@ interface Project {
   projectId: string;
   projectTitle: string;
   projectCoordinator: string;
-  teamId: [UserProfileProps];
+  teamId: UserProfileProps[];
   // Add other properties as needed
 }
 
@@ -28,6 +29,8 @@ const Repository: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null); // State to track the selected project
+  const [modalVisible, setModalVisible] = useState(false); // State to control the visibility of the modal
 
   // Function to toggle the visibility of the form
   const toggleFormVisibility = () => {
@@ -79,6 +82,18 @@ const Repository: React.FC = () => {
   // Function to clear the search term
   const clearFilter = () => {
     setSearchTerm('');
+  };
+
+  // Function to open the modal and set the selected project
+  const openModal = (project: Project) => {
+    setSelectedProject(project);
+    setModalVisible(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setSelectedProject(null);
+    setModalVisible(false);
   };
 
   // Filter projects based on search term
@@ -166,6 +181,7 @@ const Repository: React.FC = () => {
               <th>Projects/Papers</th>
               <th>Project Coordinators</th>
               <th>Team</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -181,15 +197,33 @@ const Repository: React.FC = () => {
                     </div>
                   ))}
                 </td>
-                <button className="details-btn" onClick={() => navigate(`/project-details/${project.projectId}`)}><i className="fas fa-info"></i> View more details</button>
+                <td>
+                  <button className="details-btn" onClick={() => openModal(project)}>
+                    <i className="fas fa-info"></i> View details
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <footer className="footer">
-                    <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
-                  </footer>
+        <p>&copy; 2024 AcademicHarbor. All rights reserved.</p>
+      </footer>
+
+      {/* Modal component */}
+      <Modal
+        visible={modalVisible}
+        onCancel={closeModal}
+        footer={null}
+      >
+        {selectedProject && (
+          <div>
+            <h2>{selectedProject.projectTitle}</h2>
+            {/* Display other project details */}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

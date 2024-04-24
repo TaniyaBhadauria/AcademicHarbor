@@ -11,12 +11,15 @@ const UserProfilePage = () => {
     email: 'stone.d@example.com', profilePicture: 'https://media.istockphoto.com/id/831902150/photo/ive-solidified-my-name-in-the-business-world.jpg?s=612x612&w=0&k=20&c=GCkoeN4GXE9W3EgNmwnInZpvGEepUSPd7N8NMKGBGFs=' },
   ]);
   const navigation = useNavigation();
-  const handleSignIn = () => {
-    navigation.navigate('SignIn');
-  };
   const handleHome = () => {
     navigation.navigate('AcademicHarbor');
   }
+   const handleSignIn = () => {
+       navigation.navigate('SignIn');
+    };
+      const handleSignUp = () => {
+         navigation.navigate('SignUpPage');
+      };
   const handleProjects = () => {
   navigation.navigate('Projects');
   };
@@ -71,7 +74,7 @@ const UserProfilePage = () => {
                   <Text style={styles.menuItem} onPress={handleInbox}>Inbox</Text>
                   <Text style={styles.menuItem} onPress={handleNotifications}>Notification</Text>
                   <Text style={[styles.menuItem, styles.signIn]} onPress={handleSignIn}>Sign In</Text>
-                  <Text style={[styles.menuItem, styles.signUp]}>Sign Up</Text>
+                  <Text style={[styles.menuItem, styles.signUp]} onPress={handleSignUp}>Sign Up</Text>
                 </View>
       )}
 
