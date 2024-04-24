@@ -11,9 +11,12 @@ const UserProfilePage = () => {
     email: 'stone.d@example.com', profilePicture: 'https://media.istockphoto.com/id/831902150/photo/ive-solidified-my-name-in-the-business-world.jpg?s=612x612&w=0&k=20&c=GCkoeN4GXE9W3EgNmwnInZpvGEepUSPd7N8NMKGBGFs=' },
   ]);
   const navigation = useNavigation();
-   const handleSignIn = () => {
-       navigation.navigate('SignIn');
-    };
+  const handleSignIn = () => {
+    navigation.navigate('SignIn');
+  };
+  const handleHome = () => {
+    navigation.navigate('AcademicHarbor');
+  }
   const handleProjects = () => {
   navigation.navigate('Projects');
   };
@@ -54,7 +57,7 @@ const UserProfilePage = () => {
         <Image source={require('./images/umbc_logo.png')} style={styles.logo} />
       </View>
       <View style={styles.header}>
-        <Ionicons name="home" size={24} color="white" style={styles.icon} />
+        <Ionicons name="home" size={24} color="white" style={styles.icon} onPress={handleHome} />
         <Text style={styles.headerText}>AcademicHarbor</Text>
         <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
           <Ionicons name="menu" size={24} color="white" style={styles.icon} />
