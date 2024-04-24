@@ -19,7 +19,7 @@ const AcademicHarborPage: React.FC = () => {
     navigate('/signup');
   };
   const handleReadMoreClick = () => {
-    navigate('/help');
+    navigate('/faq');
   };
 
   return (
