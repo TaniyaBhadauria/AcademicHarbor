@@ -28,6 +28,7 @@ const UserProfile: React.FC = () => {
   const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
   const [emailForm] = Form.useForm();
   const [selectedProfileEmail, setSelectedProfileEmail] = useState<string>('');
+  const [selectedProfileEmailID, setSelectedProfileEmailID] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [myEmail, setMyEmail] = useState<string>('');
   const [showChatModal, setShowChatModal] = useState(false); // Add state for chat modal visibility
@@ -101,6 +102,7 @@ const UserProfile: React.FC = () => {
 
   const handleEmailButtonClick = (profile: UserProfileProps) => {
     setSelectedProfileEmail(profile.userName);
+    setSelectedProfileEmailID(profile.emailId);
     setMyEmail(userData.userName);
     setUserEmail(profile.userName);
     setEmailModalVisible(true);
@@ -117,7 +119,8 @@ const UserProfile: React.FC = () => {
   const sendEmail = async (subject: string, messageBody: string) => {
     const values = emailForm.getFieldsValue();
     try{
-    const response = await fetch(`http://localhost:8082/hello-world/send-message?description=${values.subject}&senderId=${values.from}&recipientId=${values.to}&subject=${values.subject}&body=${values.messageBody}`);
+    const response = await fetch(`http://localhost:8082/hello-world/send-message?description=${values.subject}&senderId=${values.from}&recipientId=${values.to}&subject=${values.subject}&body=${values.messageBody}
+    &recipientmailId=${selectedProfileEmailID}`);
           if (response.ok) {
             // Handle success response
             console.log('Email sent successfully');
