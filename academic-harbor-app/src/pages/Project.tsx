@@ -97,9 +97,18 @@ const Project: React.FC = () => {
     setFilteredProjects(filtered);
   };
 
-  const handleApply = (project: ProjectFields) => {
+  const handleApply = async (project: ProjectFields) => {
     console.log('Applying for:', project);
-    navigate('/apply');
+    const response =  await fetch(`http://localhost:8082/hello-world/apply?projectName=${project.projectTitle}`);
+              if (response.ok) {
+                // Handle success response
+                 const message = await response.text();
+                    alert(message);
+                console.log('Email sent successfully');
+              } else {
+                // Handle error response
+                console.error('Failed to send email:', response);
+              }
   };
 
   const handleSave = (project: ProjectFields) => {
