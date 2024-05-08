@@ -112,7 +112,7 @@ const Project: React.FC = () => {
   };
 
   const handleSave = (project: ProjectFields) => {
-    console.log('Saving:', project);
+    alert("Project has been saved to your profile");
   };
 
   const handleViewDetails = (project: ProjectFields) => {
