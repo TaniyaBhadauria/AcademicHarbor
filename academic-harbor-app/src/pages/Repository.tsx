@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal } from 'antd';
+import { Modal, Card } from 'antd';
 import backgroundImage from './images/background.png';
 import Header from './Component/Header';
 import './styles/Repository.css';
@@ -15,10 +15,24 @@ interface UserProfileProps {
   profilePicture: string;
   linkedin: string;
 }
+// projectTitle: elements['project-title'].value,
+// projectDescription: elements['project-description'].value,
+// startDate: elements['start-date'].value,
+// endDate: elements['end-date'].value,
+// projectCoordinator: elements['project-coordinator'].value,
+// teamID: elements['team-name'].value,
+// projectDepartment: elements['project-department'].value,
+// concentration: elements['concentration'].value,
+// projectStatus: elements['project-status'].value,
 interface Project {
   projectId: string;
   projectTitle: string;
+  projectDescription: string;
+  startDate : string;
+  endDate: string;
   projectCoordinator: string;
+  concentration: string;
+  projectStatus: string;
   teamId: UserProfileProps[];
   // Add other properties as needed
 }
@@ -98,8 +112,55 @@ const Repository: React.FC = () => {
 
   // Filter projects based on search term
   const filteredProjects = projects.filter(project =>
-    project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
+    project.projectTitle && project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  //onSubmit
+  // Function to handle form submission
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    closeForm();
+    event.preventDefault();
+  
+    const elements = event.currentTarget.elements as HTMLFormControlsCollection & {
+      'project-title': HTMLInputElement;
+      'project-description': HTMLTextAreaElement;
+      'start-date': HTMLInputElement;
+      'end-date': HTMLInputElement;
+      'project-coordinator': HTMLInputElement;
+      'team-name': HTMLInputElement;
+      'project-department': HTMLInputElement;
+      'concentration': HTMLInputElement;
+      'project-status': HTMLInputElement;
+    };
+    // console.log(elements['project-description'].value);
+    const formData = {
+      projectTitle: elements['project-title'].value,
+      projectDescription: elements['project-description'].value,
+      startDate: elements['start-date'].value,
+      endDate: elements['end-date'].value,
+      projectCoordinator: elements['project-coordinator'].value,
+      teamID: elements['team-name'].value,
+      projectDepartment: elements['project-department'].value,
+      concentration: elements['concentration'].value,
+      projectStatus: elements['project-status'].value,
+    };
+    console.log(formData)
+    const queryParams = new URLSearchParams(formData).toString();
+  
+    try {
+      const response = await fetch(`http://localhost:8082/hello-world/add-project?${queryParams}`);
+      if (response.ok) {
+        alert('Project added successfully!');
+        closeForm(); // Close the form after successful submission
+      } else {
+        alert('Failed to add project. Please try again later.');
+      }
+      // Handle response as needed
+    } catch (error) {
+      console.error('Error adding project:', error);
+    }
+  };
+  
 
   return (
     <div className="container">
@@ -113,10 +174,10 @@ const Repository: React.FC = () => {
           <div className="popup">
             <div className="popup-content" style={{ maxHeight: '400px', overflowY: 'auto', padding: '20px' }}>
               <span className="close" onClick={toggleFormVisibility}>&times;</span><br /><br />
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="project-name">Project Title:</label>
-                  <input className="project-input" id="project-name" type="text" placeholder="Project Title" />
+                  <input className="project-input" id="project-title" type="text" placeholder="Project Title" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="project-description">Project Description:</label>
@@ -218,10 +279,23 @@ const Repository: React.FC = () => {
         footer={null}
       >
         {selectedProject && (
-          <div>
-            <h2>{selectedProject.projectTitle}</h2>
-            {/* Display other project details */}
-          </div>
+          <div >
+          <h2>{selectedProject.projectTitle}</h2>
+          <Card title="Project Details" style={{ width: 450 }}>
+            <p><strong>Description:</strong> {selectedProject.projectDescription}</p>
+            <p><strong>Start Date:</strong> {selectedProject.startDate}</p>
+            <p><strong>End Date:</strong> {selectedProject.endDate}</p>
+            <p><strong>Coordinator:</strong> {selectedProject.projectCoordinator}</p>
+            <p><strong>Concentration:</strong> {selectedProject.concentration}</p>
+            <p><strong>Status:</strong> {selectedProject.projectStatus}</p>
+            <p><strong>Team:</strong></p>
+            <ul>
+              {selectedProject.teamId.map((member, index) => (
+                <li key={index}>{member.userName}</li>
+              ))}
+            </ul>
+          </Card>
+        </div>
         )}
       </Modal>
     </div>

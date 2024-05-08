@@ -461,4 +461,51 @@ public class AcademicHarborResource {
         return user;
     }
 
+    @GET
+    @Path("/add-project")
+    public String registerProject(
+                               @QueryParam("projectTitle") String projectTitle,
+                               @QueryParam("projectDescription") String projectDescription,
+                               @QueryParam("startDate") String startDate,
+                               @QueryParam("endDate") String endDate,
+                               @QueryParam("projectCoordinator") String projectCoordinator,
+                               @QueryParam("teamID") String teamID,
+                               @QueryParam("projectDepartment") String projectDepartment,
+                               @QueryParam("concentration") String concentration,
+                               @QueryParam("projectStatus") String projectStatus) throws UnsupportedEncodingException {
+
+        // Connect to the MongoDB database
+        MongoCollection<Document> userCollection = new MongoDBExample().getCollection("ProjectRepository");
+        Bson filter = exists("ProjectID");
+
+
+        FindIterable<Document> result = userCollection.find(filter)
+                .sort(descending("ProjectID"))
+                .limit(1);
+
+        // Get the first document from the result
+        Document largestMessage = result.first();
+
+        // Extract the messageId field from the document
+        int projectID = largestMessage.getInteger("ProjectID");
+
+        // Create a new user document
+        Document userDocument = new Document("ProjectID", projectID+1)
+                .append("ProjectTitle", projectTitle)
+                .append("ProjectDescription", projectDescription)
+                .append("StartDate", startDate)
+                .append("EndDate", endDate)
+                .append("ProjectCoordinator", projectCoordinator)
+                .append("TeamID", 1)//teamID)
+                .append("ProjectDepartment", projectDepartment)
+                .append("Concentration", concentration)
+                .append("ProjectStatus", projectStatus);
+
+        // Insert the user document into the database
+        userCollection.insertOne(userDocument);
+
+        // Return success response
+        return "Project registered successfully";
+    }
+
 }
