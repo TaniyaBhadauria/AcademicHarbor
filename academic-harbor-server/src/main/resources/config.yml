@@ -8,3 +8,6 @@ server:
   connector:
     type: http
     port: 8082
+
+mongodb: mongodb+srv://admin:Taniya@123@cluster0.y0nl8eb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+sqldb: mysql://admin:Taniya@123@mysql.academicHarbor.com:3306/Academicharbor
